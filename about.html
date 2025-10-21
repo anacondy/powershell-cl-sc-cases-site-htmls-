@@ -45,12 +45,23 @@
                     <li><strong>Patreon:</strong> <a href="#" target="_blank">[Your Patreon Link Here]</a></li>
                     <li><strong>UPI:</strong> <a href="#" target="_blank">[Your UPI ID Here]</a></li>
                 </ul>
-                <div class="section-separator-line"></div> {/* Separator after Support */}
+                <div class="qr-code-box" style="margin-top: 20px; padding: 20px; text-align: center; background-color: var(--section-bg-blend); border-radius: 8px;">
+                    <p style="margin-bottom: 10px; font-weight: 500;">Scan to Support via UPI</p>
+                    <div style="width: 200px; height: 200px; margin: 0 auto; background-color: #ffffff; display: flex; align-items: center; justify-content: center; border-radius: 8px; padding: 10px;">
+                        <p style="color: #666; font-size: 0.9em;">[QR Code Placeholder - Add your UPI QR code image here]</p>
+                    </div>
+                </div>
+                <div class="section-separator-line"></div>
 
                 <h2>Feedback</h2>
                 <p>Have suggestions, corrections, or found a bug? Your feedback is invaluable.</p>
-                <p>Please reach out via: <a href="mailto:your_email@example.com">[Your Feedback Email/Link Here]</a></p>
-                <div class="section-separator-line"></div> {/* Separator after Feedback */}
+                <div style="margin: 20px 0;">
+                    <textarea id="feedback-text" placeholder="Enter your feedback here..." style="width: 100%; min-height: 100px; padding: 10px; border: 1px solid var(--section-separator-color); border-radius: 5px; font-family: inherit; background-color: var(--card-background); color: var(--text-color);"></textarea>
+                    <button id="submit-feedback-btn" style="margin-top: 10px; padding: 10px 20px; background-color: var(--link-color); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 500; transition: background-color 0.3s;">Submit Feedback</button>
+                    <div id="feedback-result" style="margin-top: 10px; padding: 10px; border-radius: 5px; display: none;"></div>
+                </div>
+                <p>Alternatively, reach out via: <a href="mailto:your_email@example.com">[Your Feedback Email/Link Here]</a></p>
+                <div class="section-separator-line"></div>
 
                 <div class="disclaimer">
                     <p class="disclaimer-heading">
@@ -107,6 +118,44 @@
         document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.add('loaded');
         });
+
+        // Feedback submission with trace ID
+        const submitBtn = document.getElementById('submit-feedback-btn');
+        const feedbackText = document.getElementById('feedback-text');
+        const feedbackResult = document.getElementById('feedback-result');
+
+        if (submitBtn) {
+            submitBtn.addEventListener('click', () => {
+                const feedback = feedbackText.value.trim();
+                if (!feedback) {
+                    feedbackResult.style.display = 'block';
+                    feedbackResult.style.backgroundColor = '#ffebee';
+                    feedbackResult.style.color = '#c62828';
+                    feedbackResult.textContent = 'Please enter your feedback before submitting.';
+                    return;
+                }
+
+                // Generate unique trace ID
+                const traceId = 'TRC-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                
+                // In a real implementation, this would send the feedback to a server
+                // For now, we'll just display a success message with the trace ID
+                feedbackResult.style.display = 'block';
+                feedbackResult.style.backgroundColor = '#e8f5e9';
+                feedbackResult.style.color = '#2e7d32';
+                feedbackResult.innerHTML = `<strong>Thank you for your feedback!</strong><br>Your trace ID: <strong>${traceId}</strong><br>Please save this ID for reference.`;
+                
+                // Clear the textarea
+                feedbackText.value = '';
+                
+                // Log to console for debugging (in production, this would be sent to server)
+                console.log('Feedback submitted:', {
+                    traceId: traceId,
+                    feedback: feedback,
+                    timestamp: new Date().toISOString()
+                });
+            });
+        }
 
     </script>
 </body>
