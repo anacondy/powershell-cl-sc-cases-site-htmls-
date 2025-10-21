@@ -422,11 +422,11 @@ a:hover {
 }
 .timeline-card {
     width: calc(50% - 60px); /* 50% minus generous gap for alignment */
-    background-color: var(--card-background); /* Frosted card background */
-    border: 1px solid var(--section-separator-color); /* Kept border for individual timeline cards */
+    background-color: transparent; /* No background for timeline cards */
+    border: none; /* No borders for timeline cards */
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Keep a subtle shadow for definition */
+    box-shadow: none; /* No shadow for timeline cards */
     position: relative;
     z-index: 1;
     transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
