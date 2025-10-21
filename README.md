@@ -209,13 +209,16 @@ The archive currently includes landmark cases spanning from 1950 to 2024, coveri
 
 ---
 
-## 📂 Repository
+## 🌐 Live Site
 
-**Source Code**: [https://github.com/anacondy/powershell-cl-sc-cases-site-htmls-/tree/main](https://github.com/anacondy/powershell-cl-sc-cases-site-htmls-/tree/main)
+**GitHub Pages**: [https://anacondy.github.io/powershell-cl-sc-cases-site-htmls-/](https://anacondy.github.io/powershell-cl-sc-cases-site-htmls-/)
 
 ## ✍️ Authors
 
-From the movie 'Sucker Punch' — Authors: anacondy &amp; Copilot 🎇🦓🐈‍⬛
+💫 *"You have all the weapons you need. Now fight!"* 💫  
+— From *Sucker Punch* 🎬  
+**Created by**: anacondy & GitHub Copilot 🚀✨🔮  
+*Fighting for justice, one case at a time* ⚖️💪🌟
 
 ---
 
