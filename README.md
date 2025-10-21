@@ -209,4 +209,14 @@ The archive currently includes landmark cases spanning from 1950 to 2024, coveri
 
 ---
 
+## 📂 Repository
+
+**Source Code**: [https://github.com/anacondy/powershell-cl-sc-cases-site-htmls-/tree/main](https://github.com/anacondy/powershell-cl-sc-cases-site-htmls-/tree/main)
+
+## ✍️ Authors
+
+From the movie 'Sucker Punch' — Authors: anacondy &amp; Copilot 🎇🦓🐈‍⬛
+
+---
+
 **Note**: This website is for informational and educational purposes only. It does not provide legal advice. The information presented constitutes fair reporting and analysis of judicial pronouncements, which are matters of public record.
