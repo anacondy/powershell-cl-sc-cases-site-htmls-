@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About & Support - Ramsey's Legal Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { opacity: 0; transition: opacity 0.5s ease-in-out; }
+        body.loaded { opacity: 1; }
+    </style>
+</head>
+<body class="light-mode">
+
+    <div class="mock-nav">
+        <div class="left-section">
+            <span class="nav-icon" onclick="history.back()">&lt;</span>
+            <span class="nav-icon" onclick="history.forward()">&gt;</span>
+            <span class="nav-icon" onclick="location.reload()">&#x21bb;</span>
+        </div>
+        <div class="center-text">Ramsey</div>
+        <div class="right-section">
+            <div class="theme-toggle-wrapper">
+                <label class="theme-toggle">
+                    <input type="checkbox" id="theme-switch">
+                    <span class="slider round"></span>
+                </label>
+                <span>☀️/🌙</span>
+            </div>
+            <span class="nav-icon" onclick="window.location.href='index.html'">&#x2630;</span>
+            <span class="nav-icon">&#x2716;</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-card about-page">
+
+            <h1>About & Support</h1>
+
+            <main>
+                <h2>Support This Project</h2>
+                <p>Maintaining and expanding this archive takes time and resources. If you find the information valuable, please consider supporting its development through the following channels:</p>
+                <ul>
+                    <li><strong>Patreon:</strong> <a href="#" target="_blank">[Your Patreon Link Here]</a></li>
+                    <li><strong>UPI:</strong> <a href="#" target="_blank">[Your UPI ID Here]</a></li>
+                </ul>
+                <div class="section-separator-line"></div> {/* Separator after Support */}
+
+                <h2>Feedback</h2>
+                <p>Have suggestions, corrections, or found a bug? Your feedback is invaluable.</p>
+                <p>Please reach out via: <a href="mailto:your_email@example.com">[Your Feedback Email/Link Here]</a></p>
+                <div class="section-separator-line"></div> {/* Separator after Feedback */}
+
+                <div class="disclaimer">
+                    <p class="disclaimer-heading">
+                      <span class="disclaimer-case-name">Shreya Singhal <span class="v-text">v.</span> Union of India (2015)</span>
+                    </p>
+                    <p class="disclaimer-text">
+                      The information presented on this website constitutes fair reporting and analysis of judicial pronouncements, which are matters of public record. The content herein is intended for informational and educational purposes only. In accordance with the principles upheld in *Shreya Singhal v. Union of India*, which struck down Section 66A of the Information Technology Act, 2000 as violative of Article 19(1)(a) of the Constitution, the dissemination of such information is protected under the fundamental right to freedom of speech and expression. This website does not provide legal advice, and the content should not be construed as such. Reliance on any information provided herein is solely at the user's own risk.
+                    </p>
+                </div>
+                </main>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality (Identical script)
+        const themeSwitch = document.getElementById('theme-switch');
+        const body = document.body;
+
+        function setTheme(isLight) {
+            if (isLight) {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+            }
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            themeSwitch.checked = (savedTheme === 'light');
+            setTheme(savedTheme === 'light');
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            themeSwitch.checked = false;
+            setTheme(false);
+        } else {
+            themeSwitch.checked = true;
+            setTheme(true);
+        }
+
+        themeSwitch.addEventListener('change', () => {
+            setTheme(themeSwitch.checked);
+        });
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (!localStorage.getItem('theme')) {
+                themeSwitch.checked = !event.matches;
+                setTheme(!event.matches);
+            }
+        });
+
+        // Simple fade-in animation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('loaded');
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,665 @@
+/* Root variables for theming */
+:root {
+    /* Light Mode (Default) - Will be overridden by JS if device is dark */
+    --text-color: #333333; /* Light mode text */
+    --background-color: #f0f2f5; /* Light mode background - will be masked by image */
+    --link-color: #007bff; /* Blue links for light mode */
+    --heading-color: #1a1a1a; /* Light mode headings */
+    --meta-color: #666666; /* Medium gray for meta */
+    --card-background: rgba(255, 255, 255, 0.9); /* Light mode frosted content card */
+    --mock-nav-background: rgba(255, 255, 255, 0.7); /* Light mode frosted mock nav */
+    --section-separator-color: #e0e0e0; /* Light mode thin separator and section borders if needed */
+    /* --main-card-border: rgba(0, 0, 0, 0.1); -- THIS IS NOW REMOVED */
+
+
+    --v-color: #DC143C; /* Crimson Red for 'v.' */
+    --date-color: #8A2BE2; /* BlueViolet for date */
+    --ruling-highlight-bg: #007bff; /* Blue highlight for light mode ruling */
+    --ruling-highlight-text: #FFFFFF; /* White text on blue highlight */
+    --yes-outline: #28a745; /* Green */
+    --no-outline: #dc3545; /* Red */
+    --concurring-outline: #6a5acd; /* Purple */
+    --timeline-dot: #007bff; /* Blue timeline dot */
+    --timeline-line: #e0e0e0; /* Light gray timeline line */
+    --section-bg-blend: rgba(0, 0, 0, 0.03); /* Light blend for sub-sections */
+}
+
+/* Dark mode variables */
+body.dark-mode {
+    --text-color: #e0e0e0; /* Dark mode text */
+    --background-color: #1a1a1a; /* Dark mode background - will be masked by image */
+    --link-color: #FFFF00; /* Yellow links for dark mode */
+    --heading-color: #FFFFFF; /* Dark mode headings */
+    --meta-color: #b0b0b0; /* Dark mode meta info */
+    --card-background: rgba(26, 26, 26, 0.9); /* Dark mode frosted content card */
+    --mock-nav-background: rgba(26, 26, 26, 0.7); /* Dark mode frosted mock nav */
+    --section-separator-color: rgba(255, 255, 255, 0.1); /* Dark mode thin separator and section borders if needed */
+    /* --main-card-border: rgba(255, 255, 255, 0.1); -- THIS IS NOW REMOVED */
+
+    --ruling-highlight-bg: #FFFF00; /* Yellow highlight for dark mode ruling */
+    --ruling-highlight-text: #1a1a1a; /* Dark text on yellow highlight */
+    --timeline-dot: #FFFF00; /* Yellow timeline dot */
+    --timeline-line: #444444; /* Darker gray timeline line */
+    --section-bg-blend: rgba(255, 255, 255, 0.05); /* Dark blend for sub-sections */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color); /* Fallback */
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    line-height: 1.8;
+    transition: background-color 0.3s, color 0.3s;
+
+    /* Background image for frosted glass effect */
+    background-image: url('https://user-images.githubusercontent.com/97839659/251341142-2d93e18a-f5a6-4a4b-972a-609141f3e157.png'); /* Placeholder image */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keep background fixed */
+}
+
+.container {
+    max-width: 900px;
+    width: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 100px; /* Space for fixed nav */
+}
+
+.content-card {
+    background-color: var(--card-background);
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    border-radius: 12px;
+    padding: 50px 70px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow for frosted effect */
+    width: 100%;
+    max-width: 900px; /* Wider content card */
+    margin-bottom: 80px;
+    box-sizing: border-box;
+    z-index: 1;
+    /* REMOVED MAIN CARD BORDER: border: 1px solid var(--main-card-border); */
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Nav Bar - Frosted */
+.mock-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: var(--mock-nav-background);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    box-sizing: border-box;
+    justify-content: space-between;
+    color: var(--meta-color);
+    z-index: 1000;
+    /* REMOVED NAV BORDER: border-bottom: 1px solid var(--main-card-border); */
+    transition: background-color 0.3s;
+}
+.mock-nav .left-section,
+.mock-nav .right-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.mock-nav .left-section .nav-icon {
+    cursor: pointer;
+    font-size: 1.2em;
+    color: var(--meta-color);
+    transition: color 0.3s;
+}
+.mock-nav .left-section .nav-icon:hover {
+    color: var(--link-color);
+}
+.mock-nav .center-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 500;
+    color: var(--heading-color);
+    transition: color 0.3s;
+}
+/* Toggle Switch */
+.theme-toggle { position: relative; display: inline-block; width: 40px; height: 24px; }
+.theme-toggle input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: 0.4s; border-radius: 24px; }
+.slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: 0.4s; border-radius: 50%; }
+input:checked + .slider { background-color: #2196F3; }
+input:checked + .slider:before { transform: translateX(16px); }
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.back-link {
+    font-size: 1.1em;
+    color: var(--meta-color);
+    text-decoration: none;
+    margin-bottom: 20px;
+    display: inline-block;
+    transition: color 0.3s;
+}
+.back-link:hover {
+    color: var(--link-color);
+}
+.title {
+    font-size: 3.2em;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin: 0;
+    line-height: 1.3;
+    transition: color 0.3s;
+}
+.title .v-text {
+    color: var(--v-color);
+    font-style: italic;
+}
+.meta-info {
+    font-size: 1.1em;
+    color: var(--meta-color);
+    margin-top: 15px;
+    transition: color 0.3s;
+}
+.meta-info .date {
+    color: var(--date-color);
+    font-weight: 500;
+}
+
+/* Justice Section (Photo circles) */
+.justice-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px 40px;
+    margin: 50px 0 30px 0;
+    padding: 30px 0;
+    border-top: 1px solid var(--section-separator-color); /* Keep this thin line */
+    border-bottom: 1px solid var(--section-separator-color); /* Keep this thin line */
+    transition: border-color 0.3s;
+}
+.justice-card {
+    text-align: center;
+    flex: 0 0 auto;
+    width: 120px;
+}
+.justice-card .photo-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    color: var(--heading-color);
+    background-color: transparent; /* Changed to transparent for clean look */
+    font-size: 1.2em; /* Adjust text size for initials */
+    transition: border-color 0.3s, background-color 0.3s;
+}
+.justice-card.yes .photo-circle { border-color: var(--yes-outline); }
+.justice-card.no .photo-circle { border-color: var(--no-outline); }
+.justice-card.concurring .photo-circle { border-color: var(--concurring-outline); }
+
+.justice-card p {
+    font-size: 0.9em;
+    margin-top: 10px;
+    margin-bottom: 0;
+    line-height: 1.3;
+    color: var(--meta-color);
+    transition: color 0.3s;
+}
+
+.ruling-info {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 40px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+.ruling-text {
+    background-color: var(--ruling-highlight-bg);
+    color: var(--ruling-highlight-text);
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Standard text */
+p {
+    font-size: 1.2em; /* Normal paragraph font */
+    margin-bottom: 2em;
+    line-height: 1.7;
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Section Headings */
+.section-heading {
+    font-size: 1.8em;
+    color: var(--heading-color);
+    margin-top: 50px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--section-separator-color); /* Keep this thin line */
+    padding-bottom: 10px;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+/* Thin Separator */
+.thin-separator {
+    width: 100%;
+    height: 1px;
+    background-color: var(--section-separator-color);
+    margin: 50px 0;
+    transition: background-color 0.3s;
+}
+
+/* Case Details Section (borderless internal to card) */
+.case-details-section {
+    font-size: 1.1em; /* Small font */
+    line-height: 1.7;
+    margin-bottom: 50px;
+    background-color: var(--section-bg-blend); /* Slight blend for section background */
+    border-radius: 8px;
+    padding: 30px;
+    /* No border here */
+    transition: background-color 0.3s;
+}
+.details-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.detail-item {
+    flex: 1;
+    padding-right: 20px; /* Spacing between grid items */
+}
+.detail-item:last-child {
+    padding-right: 0;
+}
+.detail-item strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--link-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+.judges-list { list-style: none; padding: 0; margin: 0; }
+.judge-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.judge-item .opinion {
+    font-weight: 500;
+    font-size: 0.9em;
+}
+.judge-item .opinion.yes { color: var(--yes-outline); }
+.judge-item .opinion.concurring { color: var(--concurring-outline); }
+
+.acts-citations-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--section-separator-color); /* Keep this thin line */
+    transition: border-color 0.3s;
+}
+.acts-citations-row strong {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--heading-color);
+    font-weight: 700;
+    transition: color 0.3s;
+}
+.acts-citations-row ul {
+    list-style: decimal;
+    padding-left: 20px;
+    margin: 0;
+    color: var(--meta-color); /* Smaller font for list items */
+    font-size: 0.95em;
+}
+.acts-citations-row ul li { margin-bottom: 8px; }
+.acts-citations-row a { color: var(--link-color); }
+
+/* Arguments Section (borderless internal to card) */
+.arguments-section {
+    margin-bottom: 30px;
+    background-color: var(--section-bg-blend);
+    border-radius: 8px;
+    padding: 30px;
+    /* No border here */
+    transition: background-color 0.3s;
+}
+.arguments-section h4 { /* Sub-headings for Petitioner/Respondent */
+    font-size: 1.3em;
+    color: var(--heading-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    transition: color 0.3s;
+}
+.arguments-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+.arguments-grid ol {
+    font-size: 1.1em; /* Small font for arguments list */
+    line-height: 1.7;
+    padding-left: 20px;
+    margin: 0;
+    color: var(--text-color);
+}
+.arguments-grid ol li {
+    margin-bottom: 15px;
+}
+
+/* Timeline Section (screenshot 71 with frosted styling and NO border on the containing div) */
+.timeline-section {
+    position: relative;
+    margin: 60px 0;
+    padding: 20px 0;
+    border-radius: 8px;
+    /* No border or background for the outer timeline section container */
+}
+
+}
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: calc(100% - 40px); /* Adjust height to fit within padding */
+    background-color: var(--timeline-line);
+    border-radius: 2px;
+    top: 20px; /* Start below padding */
+    transition: background-color 0.3s;
+}
+.timeline-item {
+    position: relative;
+    margin-bottom: 60px; /* Increased margin for better spacing */
+}
+.timeline-item:last-child {
+    margin-bottom: 20px; /* Adjust for last item within padding */
+}
+.timeline-item .timeline-dot {
+    position: absolute;
+    left: 50%;
+    /* Vertically center the dot on the timeline card */
+    top: 50%;
+    transform: translate(-50%, -50%); /* Centering in both axes */
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--timeline-dot);
+    border: 3px solid var(--card-background); /* Card background for border */
+    z-index: 2;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+.timeline-card {
+    width: calc(50% - 60px); /* 50% minus generous gap for alignment */
+    background-color: var(--card-background); /* Frosted card background */
+    border: 1px solid var(--section-separator-color); /* Kept border for individual timeline cards */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Keep a subtle shadow for definition */
+    position: relative;
+    z-index: 1;
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.timeline-item:nth-child(odd) .timeline-card { /* Right side */
+    margin-left: calc(50% + 40px); /* 50% plus gap from line */
+}
+.timeline-item:nth-child(even) .timeline-card { /* Left side */
+    margin-right: calc(50% + 40px); /* 50% plus gap from line */
+    margin-left: auto; /* Push to the left */
+}
+.timeline-card h4 {
+    color: var(--link-color);
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2em; /* Font size for timeline card titles */
+    transition: color 0.3s;
+}
+.timeline-card p {
+    font-size: 1em; /* Smaller font for timeline details */
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+.timeline-card .date {
+    font-size: 0.9em;
+    color: var(--meta-color);
+}
+
+/* Analysis Section (uses normal paragraph fonts) */
+.analysis-section {
+    margin-top: 50px;
+    margin-bottom: 50px; /* Add margin after analysis */
+}
+
+/* Small Font Sections (Verdict & Ratio), now borderless internal to card */
+.small-font-section {
+    font-size: 1.1em; /* Smaller font as per request */
+    line-height: 1.7;
+    background-color: var(--section-bg-blend); /* Blend with frosted background */
+    border-radius: 8px;
+    padding: 30px;
+    margin-top: 40px;
+    /* No border here */
+    transition: background-color 0.3s;
+}
+.small-font-section h4 {
+    font-size: 1.5em;
+    color: var(--heading-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    transition: color 0.3s;
+}
+.small-font-section p,
+.small-font-section ul {
+    font-size: 1em; /* Relative to parent's 1.1em, so it's small */
+    margin-bottom: 0;
+    color: var(--text-color);
+}
+.small-font-section ul {
+    padding-left: 20px;
+    margin-top: 15px;
+}
+
+/* Metadata Footer */
+.metadata-footer {
+    text-align: center;
+    font-size: 1.1em;
+    color: var(--meta-color);
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid var(--section-separator-color); /* Keep this thin line */
+    transition: color 0.3s, border-color 0.3s;
+}
+/* Homepage Article List Styles */
+.article-list {
+    margin-top: 40px;
+}
+
+.article-entry {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--section-separator-color);
+}
+
+.article-entry:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.article-entry h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.article-entry h2 a {
+    text-decoration: none;
+    color: var(--heading-color);
+}
+
+.article-entry h2 a:hover {
+    color: var(--link-color);
+    text-decoration: underline;
+}
+
+.article-entry .article-summary {
+    font-size: 1.1em;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.article-entry .article-date {
+    font-size: 0.9em;
+    color: var(--meta-color);
+    font-weight: 500;
+}
+/* Homepage Article List Styles */
+.article-list {
+    margin-top: 40px;
+}
+
+.article-entry {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--section-separator-color);
+}
+
+.article-entry:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.article-entry h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.article-entry h2 a {
+    text-decoration: none;
+    color: var(--heading-color);
+}
+
+.article-entry h2 a:hover {
+    color: var(--link-color);
+    text-decoration: underline;
+}
+
+.article-entry .article-summary {
+    font-size: 1.1em;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.article-entry .article-date {
+    font-size: 0.9em;
+    color: var(--meta-color);
+    font-weight: 500;
+}
+
+/* --- ADD THIS NEW RULE --- */
+.article-entry h2 a .v-text {
+    color: var(--v-color);
+    font-style: italic;
+}
+/* --- END OF NEW RULE --- */
+/* Styles for About Page */
+.about-page h1 {
+    font-size: 3.5em; /* Larger heading */
+    color: var(--heading-color);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.about-page h2 {
+    font-size: 2.2em; /* Larger sub-headings */
+    color: #007bff; /* Blue color for headings */
+    text-align: center; /* Center align headings */
+    margin-top: 50px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+/* Remove default border-bottom for h2 in about-page */
+.about-page h2:not(.disclaimer-heading) {
+    border-bottom: none;
+}
+
+
+.about-page p, .about-page li {
+    font-size: 1.4em; /* Larger paragraph/list text */
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: 1.5em;
+}
+
+.about-page ul {
+    list-style: disc;
+    padding-left: 30px;
+    max-width: 800px; /* Constrain width for readability */
+    margin: 0 auto 30px auto; /* Center list and add bottom margin */
+}
+
+/* New: Separator for sections in About page */
+.about-page .section-separator-line {
+    width: 80%; /* Adjust width as needed */
+    height: 1px;
+    background-color: var(--section-separator-color);
+    margin: 40px auto; /* Center and provide spacing */
+}
+
+.about-page .disclaimer {
+    margin-top: 60px;
+    font-size: 1.1em; /* Slightly smaller for disclaimer */
+    color: var(--meta-color);
+    font-style: italic;
+    text-align: center;
+    border-top: none; /* No border-top here */
+    padding-top: 30px;
+}
+
+.about-page .disclaimer strong {
+    color: var(--heading-color);
+    font-style: normal;
+}
+
+/* Cursor for Clickable Icons */
+.nav-icon {
+    cursor: pointer;
+}
+a:hover {
+    color: #ffda47; /* Yellow hover color */
+}
