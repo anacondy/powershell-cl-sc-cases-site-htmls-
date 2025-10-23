@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Analytics - Ramsey's Legal Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { opacity: 0; transition: opacity 0.5s ease-in-out; }
+        body.loaded { opacity: 1; }
+        
+        .analytics-container {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .analytics-title {
+            font-size: 3em;
+            color: var(--heading-color);
+            margin-bottom: 50px;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .metric-card {
+            background-color: var(--section-bg-blend);
+            border-radius: 12px;
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .metric-label {
+            font-size: 1.3em;
+            color: var(--meta-color);
+            margin-bottom: 15px;
+        }
+        
+        .metric-value {
+            font-size: 3.5em;
+            font-weight: 700;
+            color: var(--link-color);
+            line-height: 1;
+        }
+        
+        .device-info {
+            margin-top: 40px;
+            padding: 30px;
+            background-color: var(--section-bg-blend);
+            border-radius: 12px;
+        }
+        
+        .device-title {
+            font-size: 2em;
+            color: var(--heading-color);
+            margin-bottom: 20px;
+        }
+        
+        .device-display {
+            font-size: 4em;
+            margin: 20px 0;
+        }
+        
+        .device-name {
+            font-size: 1.5em;
+            color: var(--text-color);
+        }
+        
+        .rating-section {
+            margin-top: 60px;
+            padding: 40px;
+            background-color: var(--section-bg-blend);
+            border-radius: 12px;
+        }
+        
+        .rating-title {
+            font-size: 2em;
+            color: var(--heading-color);
+            margin-bottom: 30px;
+        }
+        
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .star {
+            font-size: 4em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            filter: grayscale(100%);
+            opacity: 0.3;
+        }
+        
+        .star:hover,
+        .star.active {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.2) rotate(10deg);
+        }
+        
+        .star.active {
+            animation: starPulse 0.5s ease;
+        }
+        
+        @keyframes starPulse {
+            0%, 100% { transform: scale(1.2) rotate(0deg); }
+            50% { transform: scale(1.4) rotate(15deg); }
+        }
+        
+        .quote-section {
+            margin-top: 50px;
+            padding: 40px;
+            font-style: italic;
+            font-size: 1.5em;
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+        
+        .legal-disclaimer-section {
+            margin-top: 50px;
+            padding: 40px;
+            text-align: left;
+        }
+        
+        .disclaimer-heading {
+            font-size: 2.5em;
+            color: var(--heading-color);
+            margin-bottom: 20px;
+        }
+        
+        .disclaimer-heading .v-red {
+            color: #DC143C;
+            font-size: 1.2em;
+        }
+        
+        .disclaimer-subtext {
+            font-size: 1.3em;
+            color: var(--meta-color);
+            font-style: italic;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body class="light-mode">
+
+    <div class="mock-nav">
+        <div class="left-section">
+            <span class="nav-icon" onclick="history.back()">&lt;</span>
+            <span class="nav-icon" onclick="history.forward()">&gt;</span>
+            <span class="nav-icon" onclick="location.reload()">&#x21bb;</span>
+        </div>
+        <div class="center-text">Ramsey</div>
+        <div class="right-section">
+            <div class="theme-toggle-wrapper">
+                <label class="theme-toggle">
+                    <input type="checkbox" id="theme-switch">
+                    <span class="slider round"></span>
+                </label>
+                <span>☀️/🌙</span>
+            </div>
+            <span class="nav-icon" onclick="window.location.href='about.html'">&#x2630;</span>
+            <span class="nav-icon" onclick="window.location.href='index.html'">&#x2716;</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-card">
+            <div class="analytics-container">
+                <h1 class="analytics-title">Site Analytics</h1>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Today's Visitors</div>
+                        <div class="metric-value" id="today-visitors">0</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Yesterday's Visitors</div>
+                        <div class="metric-value" id="yesterday-visitors">0</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">This Month</div>
+                        <div class="metric-value" id="month-visitors">0</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Last Month</div>
+                        <div class="metric-value" id="last-month-visitors">0</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">New Visitors</div>
+                        <div class="metric-value" id="new-visitors">0</div>
+                    </div>
+                </div>
+                
+                <div class="device-info">
+                    <h2 class="device-title">Your Device</h2>
+                    <div class="device-display" id="device-icon">🖥️</div>
+                    <div class="device-name" id="device-name">Desktop</div>
+                </div>
+                
+                <div class="rating-section">
+                    <h2 class="rating-title">Rate Your Experience</h2>
+                    <div class="stars-container" id="stars-container">
+                        <span class="star" data-rating="1">⭐</span>
+                        <span class="star" data-rating="2">⭐</span>
+                        <span class="star" data-rating="3">⭐</span>
+                        <span class="star" data-rating="4">⭐</span>
+                        <span class="star" data-rating="5">⭐</span>
+                    </div>
+                    <div id="rating-message" style="font-size: 1.2em; color: var(--link-color); margin-top: 20px;"></div>
+                </div>
+                
+                <div class="quote-section">
+                    <p>"I wrote you 365 letters. I wrote you everyday for a year."</p>
+                    <p>"It wasn't over, it still isn't over!"</p>
+                    <p style="margin-top: 30px; font-size: 0.9em; font-style: normal; color: var(--meta-color);">
+                        — Puppy pilot & anacondy, inspired by The Notebook
+                    </p>
+                </div>
+                
+                <div class="legal-disclaimer-section">
+                    <h2 class="disclaimer-heading">Campbell <span class="v-red">v.</span> Acuff-Rose Music, Inc. (1994)</h2>
+                    <p class="disclaimer-subtext">
+                        Like Oskar Schindler's list, this archive preserves what must not be forgotten—each case a name, 
+                        each judgment a life touched by the scales of justice. In transforming raw legal text into 
+                        accessible knowledge, we honor the doctrine of fair use, ensuring that the lessons of the past 
+                        illuminate the path forward. One case saved is a world saved; one judgment understood is justice 
+                        preserved for all.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeSwitch = document.getElementById('theme-switch');
+        const body = document.body;
+
+        function setTheme(isLight) {
+            if (isLight) {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+            }
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            themeSwitch.checked = (savedTheme === 'light');
+            setTheme(savedTheme === 'light');
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            themeSwitch.checked = false;
+            setTheme(false);
+        } else {
+            themeSwitch.checked = true;
+            setTheme(true);
+        }
+
+        themeSwitch.addEventListener('change', () => {
+            setTheme(themeSwitch.checked);
+        });
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (!localStorage.getItem('theme')) {
+                themeSwitch.checked = !event.matches;
+                setTheme(!event.matches);
+            }
+        });
+
+        // Fade-in animation
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('loaded');
+        });
+
+        // Device detection
+        function detectDevice() {
+            const ua = navigator.userAgent.toLowerCase();
+            const deviceIconEl = document.getElementById('device-icon');
+            const deviceNameEl = document.getElementById('device-name');
+            
+            if (/android/i.test(ua)) {
+                deviceIconEl.textContent = '🐶';
+                deviceNameEl.textContent = 'Android';
+            } else if (/iphone/i.test(ua)) {
+                deviceIconEl.textContent = '🍎';
+                deviceNameEl.textContent = 'iPhone';
+            } else if (/ipad|macintosh/i.test(ua) && 'ontouchend' in document) {
+                deviceIconEl.textContent = '🍏';
+                deviceNameEl.textContent = 'iPad';
+            } else if (/mac os x/i.test(ua)) {
+                deviceIconEl.textContent = '🍏';
+                deviceNameEl.textContent = 'Mac';
+            } else if (/windows/i.test(ua)) {
+                deviceIconEl.textContent = '🪟';
+                deviceNameEl.textContent = 'Windows';
+            } else {
+                deviceIconEl.textContent = '👽';
+                deviceNameEl.textContent = 'Unknown Device';
+            }
+        }
+
+        // Simulate analytics data (in production, this would come from actual analytics)
+        function loadAnalytics() {
+            // Generate random-looking but consistent data for demo
+            const baseDate = new Date().getDate();
+            document.getElementById('today-visitors').textContent = Math.floor(Math.random() * 100) + 50;
+            document.getElementById('yesterday-visitors').textContent = Math.floor(Math.random() * 100) + 40;
+            document.getElementById('month-visitors').textContent = Math.floor(Math.random() * 2000) + 1000;
+            document.getElementById('last-month-visitors').textContent = Math.floor(Math.random() * 2000) + 800;
+            document.getElementById('new-visitors').textContent = Math.floor(Math.random() * 50) + 20;
+        }
+
+        // Star rating system
+        const stars = document.querySelectorAll('.star');
+        const ratingMessage = document.getElementById('rating-message');
+        let currentRating = 0;
+
+        stars.forEach(star => {
+            star.addEventListener('mouseenter', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                highlightStars(rating);
+            });
+
+            star.addEventListener('click', function() {
+                currentRating = parseInt(this.getAttribute('data-rating'));
+                highlightStars(currentRating);
+                this.classList.add('active');
+                
+                // Show thank you message
+                const messages = [
+                    "Thank you for your feedback! 💙",
+                    "We appreciate your input! 💙",
+                    "Thanks for rating us! 💙",
+                    "Your feedback matters! 💙",
+                    "Wonderful! Thank you! 💙"
+                ];
+                ratingMessage.textContent = messages[currentRating - 1] || messages[4];
+                
+                // Save rating (in production, this would go to a server)
+                console.log('User rated:', currentRating, 'stars');
+            });
+        });
+
+        document.querySelector('.stars-container').addEventListener('mouseleave', function() {
+            if (currentRating === 0) {
+                highlightStars(0);
+            } else {
+                highlightStars(currentRating);
+            }
+        });
+
+        function highlightStars(rating) {
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize
+        detectDevice();
+        loadAnalytics();
+    </script>
+</body>
+</html>
