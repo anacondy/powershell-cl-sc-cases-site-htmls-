@@ -29,7 +29,7 @@
                 <span>☀️/🌙</span>
             </div>
             <span class="nav-icon" onclick="window.location.href='index.html'">&#x2630;</span>
-            <span class="nav-icon">&#x2716;</span>
+            <span class="nav-icon" onclick="window.location.href='analytics.html'">&#x2716;</span>
         </div>
     </div>
 
@@ -46,9 +46,8 @@
                     <li><strong>UPI:</strong> <a href="#" target="_blank">[Your UPI ID Here]</a></li>
                 </ul>
                 <div class="qr-code-box" style="margin-top: 20px; padding: 20px; text-align: center; background-color: var(--section-bg-blend); border-radius: 8px;">
-                    <p style="margin-bottom: 10px; font-weight: 500;">Scan to Support via UPI</p>
-                    <div style="width: 200px; height: 200px; margin: 0 auto; background-color: #ffffff; display: flex; align-items: center; justify-content: center; border-radius: 8px; padding: 10px;">
-                        <p style="color: #666; font-size: 0.9em;">[QR Code Placeholder - Add your UPI QR code image here]</p>
+                    <div style="width: 200px; height: 200px; margin: 0 auto; background-color: #ffffff; display: flex; align-items: center; justify-content: center; border-radius: 8px; padding: 10px; overflow: hidden;">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" alt="UPI QR Code" style="width: 100%; height: 100%; object-fit: contain;" id="qr-code-img">
                     </div>
                 </div>
                 <div class="section-separator-line"></div>
@@ -60,7 +59,16 @@
                     <button id="submit-feedback-btn" style="margin-top: 10px; padding: 10px 20px; background-color: var(--link-color); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 500; transition: background-color 0.3s;">Submit Feedback</button>
                     <div id="feedback-result" style="margin-top: 10px; padding: 10px; border-radius: 5px; display: none;"></div>
                 </div>
-                <p>Alternatively, reach out via: <a href="mailto:your_email@example.com">[Your Feedback Email/Link Here]</a></p>
+                <p>Alternatively, reach out via: <a href="mailto:anujmeena2025@gmail.com">anujmeena2025@gmail.com</a></p>
+                
+                <div style="margin-top: 30px; padding: 20px; background-color: var(--section-bg-blend); border-radius: 8px;">
+                    <p style="font-weight: 500; margin-bottom: 10px;">Your Session Trace ID:</p>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <span id="trace-id" style="font-family: monospace; font-size: 1.1em; color: var(--link-color); font-weight: 500;">Generating...</span>
+                        <button id="copy-trace-id" style="background: none; border: none; cursor: pointer; font-size: 1.5em; padding: 5px;" title="Copy Trace ID">📋</button>
+                    </div>
+                    <div id="copy-message" style="margin-top: 10px; color: var(--link-color); font-size: 0.9em; display: none;"></div>
+                </div>
                 <div class="section-separator-line"></div>
 
                 <div class="disclaimer">
@@ -119,7 +127,64 @@
             document.body.classList.add('loaded');
         });
 
-        // Feedback submission with trace ID
+        // Session tracking
+        let sessionData = {
+            traceId: '',
+            loginTime: null,
+            device: ''
+        };
+
+        // Generate unique trace ID on page load
+        function generateTraceId() {
+            return 'TRC-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+        }
+
+        // Detect device
+        function detectDevice() {
+            const ua = navigator.userAgent.toLowerCase();
+            if (/android/i.test(ua)) return 'Android';
+            if (/iphone/i.test(ua)) return 'iOS (iPhone)';
+            if (/ipad|macintosh/i.test(ua) && 'ontouchend' in document) return 'iOS (iPad)';
+            if (/mac os x/i.test(ua)) return 'iOS (Mac)';
+            if (/windows/i.test(ua)) return 'Windows';
+            return 'Other';
+        }
+
+        // Initialize session
+        sessionData.traceId = generateTraceId();
+        sessionData.loginTime = new Date();
+        sessionData.device = detectDevice();
+
+        // Display trace ID
+        document.getElementById('trace-id').textContent = sessionData.traceId;
+
+        // Copy trace ID functionality
+        const copyBtn = document.getElementById('copy-trace-id');
+        const copyMessage = document.getElementById('copy-message');
+        
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(sessionData.traceId).then(() => {
+                copyBtn.textContent = '✓';
+                copyMessage.textContent = 'Copied to clipboard!';
+                copyMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    copyBtn.textContent = '📋';
+                    copyMessage.style.display = 'none';
+                }, 2000);
+            }).catch(() => {
+                copyMessage.textContent = 'Failed to copy. Please copy manually.';
+                copyMessage.style.display = 'block';
+            });
+        });
+
+        // Track logout time
+        let logoutTime = null;
+        window.addEventListener('beforeunload', () => {
+            logoutTime = new Date();
+        });
+
+        // Feedback submission with trace ID and session data
         const submitBtn = document.getElementById('submit-feedback-btn');
         const feedbackText = document.getElementById('feedback-text');
         const feedbackResult = document.getElementById('feedback-result');
@@ -135,24 +200,54 @@
                     return;
                 }
 
-                // Generate unique trace ID
-                const traceId = 'TRC-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                // Calculate duration
+                const currentTime = new Date();
+                const durationMs = currentTime - sessionData.loginTime;
+                const durationSec = Math.floor(durationMs / 1000);
+                const durationMin = Math.floor(durationSec / 60);
+                const durationHour = Math.floor(durationMin / 60);
                 
-                // In a real implementation, this would send the feedback to a server
-                // For now, we'll just display a success message with the trace ID
+                let durationStr = '';
+                if (durationHour > 0) {
+                    durationStr = `${durationHour} hour${durationHour > 1 ? 's' : ''}`;
+                } else if (durationMin > 0) {
+                    durationStr = `${durationMin} min${durationMin > 1 ? 's' : ''}`;
+                } else {
+                    durationStr = `${durationSec} sec`;
+                }
+
+                // Prepare session details
+                const sessionDetails = `
+Trace ID - ${sessionData.traceId}
+Session -
+LOGIN - ${sessionData.loginTime.toISOString()}
+LOGOUT - ${currentTime.toISOString()}
+Duration - ${durationStr}
+Device - ${sessionData.device}
+
+Feedback:
+${feedback}
+                `.trim();
+
+                // Create mailto link with session data
+                const mailtoLink = `mailto:anujmeena2025@gmail.com?subject=Feedback from ${sessionData.traceId}&body=${encodeURIComponent(sessionDetails)}`;
+                window.location.href = mailtoLink;
+                
+                // Display success message
                 feedbackResult.style.display = 'block';
                 feedbackResult.style.backgroundColor = '#e8f5e9';
                 feedbackResult.style.color = '#2e7d32';
-                feedbackResult.innerHTML = `<strong>Thank you for your feedback!</strong><br>Your trace ID: <strong>${traceId}</strong><br>Please save this ID for reference.`;
+                feedbackResult.innerHTML = `<strong>Opening your email client...</strong><br>Your trace ID: <strong>${sessionData.traceId}</strong><br>Please save this ID for reference.`;
                 
                 // Clear the textarea
                 feedbackText.value = '';
                 
-                // Log to console for debugging (in production, this would be sent to server)
-                console.log('Feedback submitted:', {
-                    traceId: traceId,
+                // Log to console for debugging
+                console.log('Feedback prepared:', {
+                    traceId: sessionData.traceId,
                     feedback: feedback,
-                    timestamp: new Date().toISOString()
+                    session: sessionData,
+                    duration: durationStr
                 });
             });
         }
