@@ -152,6 +152,99 @@
             font-style: italic;
             line-height: 1.8;
         }
+        
+        /* Mobile responsive styles for analytics page */
+        @media screen and (max-width: 768px) {
+            .analytics-title {
+                font-size: 2em;
+                margin-bottom: 30px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr; /* Single column on mobile */
+                gap: 20px;
+                margin-bottom: 40px;
+            }
+            
+            .metric-card {
+                padding: 20px;
+            }
+            
+            .metric-label {
+                font-size: 1.1em;
+            }
+            
+            .metric-value {
+                font-size: 2.5em;
+            }
+            
+            .device-info {
+                padding: 20px;
+                margin-top: 30px;
+            }
+            
+            .device-title {
+                font-size: 1.5em;
+            }
+            
+            .device-display {
+                font-size: 3em;
+            }
+            
+            .device-name {
+                font-size: 1.2em;
+            }
+            
+            .rating-section {
+                padding: 25px;
+                margin-top: 40px;
+            }
+            
+            .rating-title {
+                font-size: 1.5em;
+            }
+            
+            .stars-container {
+                gap: 10px;
+            }
+            
+            .star {
+                font-size: 2.5em;
+            }
+            
+            .quote-section {
+                padding: 25px;
+                font-size: 1.1em;
+                margin-top: 35px;
+            }
+            
+            .legal-disclaimer-section {
+                padding: 25px;
+                margin-top: 35px;
+            }
+            
+            .disclaimer-heading {
+                font-size: 1.6em;
+            }
+            
+            .disclaimer-subtext {
+                font-size: 0.95em;
+            }
+        }
+        
+        @media screen and (max-width: 400px) {
+            .analytics-title {
+                font-size: 1.6em;
+            }
+            
+            .metric-value {
+                font-size: 2em;
+            }
+            
+            .star {
+                font-size: 2em;
+            }
+        }
     </style>
 </head>
 <body class="light-mode">
@@ -321,13 +414,56 @@
 
         // Simulate analytics data (in production, this would come from actual analytics)
         function loadAnalytics() {
-            // Generate random-looking but consistent data for demo
-            const baseDate = new Date().getDate();
-            document.getElementById('today-visitors').textContent = Math.floor(Math.random() * 100) + 50;
-            document.getElementById('yesterday-visitors').textContent = Math.floor(Math.random() * 100) + 40;
-            document.getElementById('month-visitors').textContent = Math.floor(Math.random() * 2000) + 1000;
-            document.getElementById('last-month-visitors').textContent = Math.floor(Math.random() * 2000) + 800;
-            document.getElementById('new-visitors').textContent = Math.floor(Math.random() * 50) + 20;
+            // Site launch date - October 23, 2025
+            const siteLaunchDate = new Date('2025-10-23');
+            const currentDate = new Date();
+            
+            // Calculate days since launch
+            const daysSinceLaunch = Math.floor((currentDate - siteLaunchDate) / (1000 * 60 * 60 * 24));
+            
+            // Calculate if we're more than 1 month old
+            const oneMonthAgo = new Date(currentDate);
+            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+            const isMoreThanOneMonthOld = siteLaunchDate < oneMonthAgo;
+            
+            // Generate data based on days since launch
+            document.getElementById('today-visitors').textContent = Math.floor(Math.random() * 50) + 20;
+            document.getElementById('yesterday-visitors').textContent = Math.floor(Math.random() * 40) + 15;
+            
+            // This month - proportional to days since launch (if launched this month)
+            const currentMonth = currentDate.getMonth();
+            const launchMonth = siteLaunchDate.getMonth();
+            const currentYear = currentDate.getFullYear();
+            const launchYear = siteLaunchDate.getFullYear();
+            
+            if (currentMonth === launchMonth && currentYear === launchYear) {
+                // Site launched this month, show proportional data
+                document.getElementById('month-visitors').textContent = Math.floor(daysSinceLaunch * 30) + Math.floor(Math.random() * 100);
+            } else {
+                // Site has been running for more than current month
+                document.getElementById('month-visitors').textContent = Math.floor(Math.random() * 1000) + 500;
+            }
+            
+            // Last month - only show if site is more than 1 month old
+            const lastMonthElement = document.getElementById('last-month-visitors');
+            if (isMoreThanOneMonthOld) {
+                lastMonthElement.textContent = Math.floor(Math.random() * 1000) + 400;
+            } else {
+                // Site is less than 1 month old, show 0 or N/A
+                lastMonthElement.textContent = '0';
+                // Optionally, hide the entire card
+                const lastMonthCard = lastMonthElement.closest('.metric-card');
+                if (lastMonthCard) {
+                    lastMonthCard.style.opacity = '0.5';
+                    const label = lastMonthCard.querySelector('.metric-label');
+                    if (label) {
+                        label.textContent = 'Last Month (N/A - Site < 1 month old)';
+                        label.style.fontSize = '0.9em';
+                    }
+                }
+            }
+            
+            document.getElementById('new-visitors').textContent = Math.floor(Math.random() * 30) + 10;
         }
 
         // Star rating system
