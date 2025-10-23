@@ -662,3 +662,305 @@ a:hover {
 a:hover {
     color: #ffda47; /* Yellow hover color */
 }
+
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+/* Media query for mobile devices (phones and small tablets) */
+@media screen and (max-width: 768px) {
+    /* Reduce body padding */
+    body {
+        background-attachment: scroll; /* Better performance on mobile */
+    }
+    
+    /* Container adjustments for mobile */
+    .container {
+        padding: 20px 15px;
+        padding-top: 80px; /* Adjusted for fixed nav */
+    }
+    
+    /* Content card - reduce padding on mobile */
+    .content-card {
+        padding: 25px 20px;
+        margin-bottom: 40px;
+        border-radius: 8px;
+    }
+    
+    /* Navigation bar adjustments */
+    .mock-nav {
+        padding: 0 15px;
+        height: 60px;
+    }
+    
+    .mock-nav .left-section,
+    .mock-nav .right-section {
+        gap: 12px;
+    }
+    
+    .mock-nav .left-section .nav-icon {
+        font-size: 1.1em;
+    }
+    
+    .mock-nav .center-text {
+        font-size: 1em;
+    }
+    
+    /* Header adjustments */
+    .title {
+        font-size: 2em; /* Reduced from 3.2em */
+        line-height: 1.2;
+    }
+    
+    .meta-info {
+        font-size: 0.95em; /* Reduced from 1.1em */
+    }
+    
+    /* Justice section - better mobile layout */
+    .justice-section {
+        gap: 20px 25px;
+        padding: 20px 0;
+        margin: 30px 0 20px 0;
+    }
+    
+    .justice-card {
+        width: 90px; /* Slightly smaller on mobile */
+    }
+    
+    .justice-card .photo-circle {
+        width: 80px; /* Reduced from 100px */
+        height: 80px;
+        font-size: 1em;
+    }
+    
+    .justice-card p {
+        font-size: 0.8em;
+    }
+    
+    /* Ruling info */
+    .ruling-info {
+        font-size: 1em; /* Reduced from 1.2em */
+        margin-bottom: 30px;
+    }
+    
+    /* Paragraph text */
+    p {
+        font-size: 1em; /* Reduced from 1.2em */
+        margin-bottom: 1.5em;
+        line-height: 1.6;
+    }
+    
+    /* Section headings */
+    .section-heading {
+        font-size: 1.4em; /* Reduced from 1.8em */
+        margin-top: 35px;
+        margin-bottom: 20px;
+    }
+    
+    /* Case details section */
+    .case-details-section {
+        font-size: 0.95em; /* Reduced from 1.1em */
+        padding: 20px;
+        margin-bottom: 35px;
+    }
+    
+    .details-row {
+        flex-direction: column; /* Stack on mobile */
+        margin-bottom: 10px;
+    }
+    
+    .detail-item {
+        padding-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    /* Acts and citations - stack on mobile */
+    .acts-citations-row {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 25px;
+        padding-top: 15px;
+    }
+    
+    .acts-citations-row ul {
+        font-size: 0.9em;
+    }
+    
+    /* Arguments section - stack on mobile */
+    .arguments-section {
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+    
+    .arguments-section h4 {
+        font-size: 1.15em;
+    }
+    
+    .arguments-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 25px;
+    }
+    
+    .arguments-grid ol {
+        font-size: 0.95em;
+    }
+    
+    /* Timeline section - vertical layout for mobile */
+    .timeline-section {
+        margin: 40px 0;
+        padding: 15px 0;
+    }
+    
+    .timeline-line {
+        left: 20px; /* Move line to the left on mobile */
+        transform: none;
+        width: 3px;
+        height: calc(100% - 30px);
+        top: 15px;
+    }
+    
+    .timeline-item {
+        margin-bottom: 40px;
+    }
+    
+    .timeline-item .timeline-dot {
+        left: 20px; /* Align with the line */
+        top: 15px; /* Position at top of card */
+        transform: translate(-50%, 0);
+    }
+    
+    .timeline-card {
+        width: calc(100% - 50px); /* Full width minus space for line and dot */
+        margin-left: 50px !important; /* All cards on the right side */
+        margin-right: 0 !important;
+        padding: 15px;
+    }
+    
+    .timeline-item:nth-child(odd) .timeline-card {
+        margin-left: 50px !important;
+    }
+    
+    .timeline-item:nth-child(even) .timeline-card {
+        margin-left: 50px !important;
+    }
+    
+    .timeline-card h4 {
+        font-size: 1.1em;
+    }
+    
+    .timeline-card p {
+        font-size: 0.9em;
+    }
+    
+    .timeline-card .date {
+        font-size: 0.85em;
+    }
+    
+    /* Analysis section */
+    .analysis-section {
+        margin-top: 35px;
+        margin-bottom: 35px;
+    }
+    
+    /* Small font sections */
+    .small-font-section {
+        font-size: 0.95em;
+        padding: 20px;
+        margin-top: 30px;
+    }
+    
+    .small-font-section h4 {
+        font-size: 1.3em;
+    }
+    
+    /* Metadata footer */
+    .metadata-footer {
+        font-size: 0.95em;
+        margin-top: 40px;
+        padding-top: 20px;
+    }
+    
+    /* Homepage article list */
+    .article-list {
+        margin-top: 30px;
+    }
+    
+    .article-entry {
+        margin-bottom: 30px;
+        padding-bottom: 25px;
+    }
+    
+    .article-entry h2 {
+        font-size: 1.4em; /* Smaller heading for mobile */
+    }
+    
+    .article-entry .article-summary {
+        font-size: 0.95em;
+        line-height: 1.6;
+    }
+    
+    .article-entry .article-date {
+        font-size: 0.85em;
+    }
+    
+    /* About page mobile adjustments */
+    .about-page h1 {
+        font-size: 2.2em; /* Reduced from 3.5em */
+    }
+    
+    .about-page h2 {
+        font-size: 1.6em; /* Reduced from 2.2em */
+        margin-top: 35px;
+    }
+    
+    .about-page p, .about-page li {
+        font-size: 1em; /* Reduced from 1.4em */
+        line-height: 1.6;
+    }
+    
+    .about-page ul {
+        padding-left: 25px;
+    }
+    
+    .about-page .disclaimer {
+        font-size: 0.95em;
+        margin-top: 40px;
+    }
+    
+    /* Thin separator */
+    .thin-separator {
+        margin: 35px 0;
+    }
+}
+
+/* Extra small devices (very narrow phones) */
+@media screen and (max-width: 400px) {
+    .container {
+        padding: 15px 10px;
+        padding-top: 70px;
+    }
+    
+    .content-card {
+        padding: 20px 15px;
+        border-radius: 6px;
+    }
+    
+    .mock-nav {
+        padding: 0 10px;
+    }
+    
+    .mock-nav .left-section,
+    .mock-nav .right-section {
+        gap: 8px;
+    }
+    
+    .title {
+        font-size: 1.6em;
+    }
+    
+    .justice-card {
+        width: 70px;
+    }
+    
+    .justice-card .photo-circle {
+        width: 60px;
+        height: 60px;
+        font-size: 0.9em;
+    }
+}
