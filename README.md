@@ -198,14 +198,47 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📊 Current Case Collection
 
-The archive currently includes landmark cases spanning from 1950 to 2024, covering:
-- Constitutional law
-- Fundamental rights
-- Parliamentary powers
-- Basic structure doctrine
-- Emergency provisions
-- Electoral reforms
-- And more...
+The archive currently includes **39 landmark cases** spanning from 1950 to 2024:
+
+- Gayatri Balasamy v. M/s ISG Novasoft Technologies Ltd. (2024)
+- Electoral Bond Case: ADR v. Union of India (2024)
+- Bilkis Yakub Rasool v. Union Of India & Ors. (Bilkis Bano Remission) (2024)
+- Waqf Tribunal Jurisdiction: Maha. Waqf Board v. Shaikh Chawla (2023)
+- M. Siddiq (D) Thr. LRs. v. Mahant Suresh Das & Ors. (Ayodhya Case) (2019)
+- Indian Young Lawyers Association v. State Of Kerala (Sabarimala) (2018)
+- Joseph Shine v. Union Of India (Adultery) (2018)
+- Navtej Singh Johar & Ors. v. Union Of India (Section 377) (2018)
+- Justice K.S. Puttaswamy (Retd.) v. Union Of India (Right to Privacy) (2017)
+- Shayara Bano v. Union Of India & Ors. (Triple Talaq) (2017)
+- Shreya Singhal v. Union Of India (Section 66A) (2015)
+- National Legal Services Authority v. Union Of India & Ors. (NALSA) (2014)
+- People's Union for Civil Liberties v. Union Of India (NOTA) (2013)
+- Lily Thomas v. Union Of India (2013)
+- Aruna Ramchandra Shanbaug v. Union Of India & Ors. (Passive Euthanasia) (2011)
+- I.R. Coelho (Dead) By LRs. v. State Of Tamil Nadu (9th Schedule) (2007)
+- Lily Thomas, Etc. v. Union Of India & Ors. (2000)
+- Vishaka & Ors. v. State Of Rajasthan & Ors. (Sexual Harassment Guidelines) (1997)
+- L. Chandra Kumar v. Union Of India & Ors. (Tribunals) (1997)
+- S.R. Bommai v. Union Of India (President's Rule) (1994)
+- SCAORA v. Union of India (Second Judges Case) (1993)
+- Indra Sawhney v. Union of India (Mandal Commission) (1992)
+- Mohini Jain v. State of Karnataka (Right to Education) (1992)
+- M.C. Mehta v. Union of India (Oleum Gas Leak) (1986)
+- Olga Tellis v. Bombay Municipal Corporation (Pavement Dwellers) (1985)
+- Mohd. Ahmed Khan v. Shah Bano Begum (Shah Bano Case) (1985)
+- S.P. Gupta v. Union of India (First Judges Case) (1981)
+- Minerva Mills v. Union of India (1980)
+- Bachan Singh v. State of Punjab (Death Penalty) (1980)
+- Maneka Gandhi v. Union of India (1978)
+- ADM Jabalpur v. Shivkant Shukla (Habeas Corpus Case) (1976)
+- Indira Gandhi v. Raj Narain (Election Case) (1975)
+- Kesavananda Bharati v. State of Kerala (Basic Structure) (1973)
+- I.C. Golaknath v. State of Punjab (1967)
+- Sajjan Singh v. State of Rajasthan (1964)
+- Berubari Union Case (Re: Presidential Reference) (1960)
+- Shankari Prasad Singh Deo v. Union of India (1951)
+- State of Madras v. Champakam Dorairajan (1951)
+- A.K. Gopalan v. State of Madras (1950)
 
 ---
 
