@@ -22,6 +22,7 @@
     --timeline-dot: #007bff; /* Blue timeline dot */
     --timeline-line: #e0e0e0; /* Light gray timeline line */
     --section-bg-blend: rgba(0, 0, 0, 0.03); /* Light blend for sub-sections */
+    --button-text-color: #FFFFFF; /* White text for buttons in light mode */
 }
 
 /* Dark mode variables */
@@ -41,6 +42,7 @@ body.dark-mode {
     --timeline-dot: #FFFF00; /* Yellow timeline dot */
     --timeline-line: #444444; /* Darker gray timeline line */
     --section-bg-blend: rgba(255, 255, 255, 0.05); /* Dark blend for sub-sections */
+    --button-text-color: #1a1a1a; /* Matt black text for buttons in dark mode */
 }
 
 body {
