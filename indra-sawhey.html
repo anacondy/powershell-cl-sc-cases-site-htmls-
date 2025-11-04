@@ -7,11 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        body { opacity: 0; transition: opacity 0.5s ease-in-out; }
+        body { opacity: 0; transition: opacity 0.3s ease-in-out; }
         body.loaded { opacity: 1; }
     </style>
 </head>
-<body class="light-mode">
+<body>
 
     <div class="mock-nav">
         <div class="left-section">
@@ -241,50 +241,8 @@
         </div>
     </div>
 
-    <script>
-        // Theme toggle functionality (Identical script)
-        const themeSwitch = document.getElementById('theme-switch');
-        const body = document.body;
-
-        function setTheme(isLight) {
-            if (isLight) {
-                body.classList.remove('dark-mode');
-                body.classList.add('light-mode');
-            } else {
-                body.classList.remove('light-mode');
-                body.classList.add('dark-mode');
-            }
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        }
-
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            themeSwitch.checked = (savedTheme === 'light');
-            setTheme(savedTheme === 'light');
-        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            themeSwitch.checked = false;
-            setTheme(false);
-        } else {
-            themeSwitch.checked = true;
-            setTheme(true);
-        }
-
-        themeSwitch.addEventListener('change', () => {
-            setTheme(themeSwitch.checked);
-        });
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (!localStorage.getItem('theme')) {
-                themeSwitch.checked = !event.matches;
-                setTheme(!event.matches);
-            }
-        });
-
-         // Simple fade-in animation on load
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('loaded');
-        });
-
-    </script>
+    
+    <script src="theme.js"></script>
+    <script src="analytics-tracker.js"></script>
 </body>
 </html>
