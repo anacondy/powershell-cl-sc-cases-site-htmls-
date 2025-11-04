@@ -60,10 +60,10 @@
         localStorage.setItem(STORAGE_KEYS.LAST_VISIT, now.toISOString());
 
         // Update visit count (only if more than 30 minutes since last visit)
+        const thirtyMinutes = 30 * 60 * 1000;
         if (lastVisit) {
             const lastVisitTime = new Date(lastVisit);
             const timeDiff = now - lastVisitTime;
-            const thirtyMinutes = 30 * 60 * 1000;
             
             if (timeDiff > thirtyMinutes) {
                 const visitCount = parseInt(localStorage.getItem(STORAGE_KEYS.VISIT_COUNT) || '0');
