@@ -7,11 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        body { opacity: 0; transition: opacity 0.5s ease-in-out; }
+        body { opacity: 0; transition: opacity 0.3s ease-in-out; }
         body.loaded { opacity: 1; }
     </style>
 </head>
-<body class="light-mode">
+<body>
 
     <div class="mock-nav">
         <div class="left-section">
@@ -83,50 +83,10 @@
         </div>
     </div>
 
+    <script src="theme.js"></script>
+    <script src="analytics-tracker.js"></script>
+    <script src="device-detector.js"></script>
     <script>
-        // Theme toggle functionality (Identical script)
-        const themeSwitch = document.getElementById('theme-switch');
-        const body = document.body;
-
-        function setTheme(isLight) {
-            if (isLight) {
-                body.classList.remove('dark-mode');
-                body.classList.add('light-mode');
-            } else {
-                body.classList.remove('light-mode');
-                body.classList.add('dark-mode');
-            }
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        }
-
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            themeSwitch.checked = (savedTheme === 'light');
-            setTheme(savedTheme === 'light');
-        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            themeSwitch.checked = false;
-            setTheme(false);
-        } else {
-            themeSwitch.checked = true;
-            setTheme(true);
-        }
-
-        themeSwitch.addEventListener('change', () => {
-            setTheme(themeSwitch.checked);
-        });
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (!localStorage.getItem('theme')) {
-                themeSwitch.checked = !event.matches;
-                setTheme(!event.matches);
-            }
-        });
-
-        // Simple fade-in animation on load
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('loaded');
-        });
-
         // Session tracking
         let sessionData = {
             traceId: '',
@@ -139,21 +99,10 @@
             return 'TRC-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
         }
 
-        // Detect device
-        function detectDevice() {
-            const ua = navigator.userAgent.toLowerCase();
-            if (/android/i.test(ua)) return 'Android';
-            if (/iphone/i.test(ua)) return 'iOS (iPhone)';
-            if (/ipad|macintosh/i.test(ua) && 'ontouchend' in document) return 'iOS (iPad)';
-            if (/mac os x/i.test(ua)) return 'iOS (Mac)';
-            if (/windows/i.test(ua)) return 'Windows';
-            return 'Other';
-        }
-
         // Initialize session
         sessionData.traceId = generateTraceId();
         sessionData.loginTime = new Date();
-        sessionData.device = detectDevice();
+        sessionData.device = window.DeviceDetector ? window.DeviceDetector.getDeviceSummary() : 'Unknown Device';
 
         // Display trace ID
         document.getElementById('trace-id').textContent = sessionData.traceId;

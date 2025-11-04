@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        body { opacity: 0; transition: opacity 0.5s ease-in-out; }
+        body { opacity: 0; transition: opacity 0.3s ease-in-out; }
         body.loaded { opacity: 1; }
         
         .analytics-container {
@@ -38,6 +38,7 @@
         .metric-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            will-change: transform, box-shadow;
         }
         
         .metric-label {
@@ -99,9 +100,10 @@
         .star {
             font-size: 4em;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease-in-out;
             filter: grayscale(100%);
             opacity: 0.3;
+            will-change: filter, opacity, transform;
         }
         
         .star:hover,
@@ -247,7 +249,7 @@
         }
     </style>
 </head>
-<body class="light-mode">
+<body>
 
     <div class="mock-nav">
         <div class="left-section">
@@ -341,129 +343,64 @@
         </div>
     </div>
 
+
+    <script src="theme.js"></script>
+    <script src="analytics-tracker.js"></script>
+    <script src="device-detector.js"></script>
     <script>
-        // Theme toggle functionality
-        const themeSwitch = document.getElementById('theme-switch');
-        const body = document.body;
-
-        function setTheme(isLight) {
-            if (isLight) {
-                body.classList.remove('dark-mode');
-                body.classList.add('light-mode');
-            } else {
-                body.classList.remove('light-mode');
-                body.classList.add('dark-mode');
-            }
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        }
-
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            themeSwitch.checked = (savedTheme === 'light');
-            setTheme(savedTheme === 'light');
-        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            themeSwitch.checked = false;
-            setTheme(false);
-        } else {
-            themeSwitch.checked = true;
-            setTheme(true);
-        }
-
-        themeSwitch.addEventListener('change', () => {
-            setTheme(themeSwitch.checked);
-        });
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (!localStorage.getItem('theme')) {
-                themeSwitch.checked = !event.matches;
-                setTheme(!event.matches);
-            }
-        });
-
-        // Fade-in animation
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('loaded');
-        });
-
         // Device detection
-        function detectDevice() {
-            const ua = navigator.userAgent.toLowerCase();
+        function displayDeviceInfo() {
+            const deviceInfo = window.DeviceDetector ? window.DeviceDetector.deviceInfo : null;
             const deviceIconEl = document.getElementById('device-icon');
             const deviceNameEl = document.getElementById('device-name');
             
-            if (/android/i.test(ua)) {
-                deviceIconEl.textContent = '🐶';
-                deviceNameEl.textContent = 'Android';
-            } else if (/iphone/i.test(ua)) {
-                deviceIconEl.textContent = '🍎';
-                deviceNameEl.textContent = 'iPhone';
-            } else if (/ipad|macintosh/i.test(ua) && 'ontouchend' in document) {
-                deviceIconEl.textContent = '🍏';
-                deviceNameEl.textContent = 'iPad';
-            } else if (/mac os x/i.test(ua)) {
-                deviceIconEl.textContent = '🍏';
-                deviceNameEl.textContent = 'Mac';
-            } else if (/windows/i.test(ua)) {
-                deviceIconEl.textContent = '🪟';
-                deviceNameEl.textContent = 'Windows';
+            if (deviceInfo) {
+                deviceIconEl.textContent = deviceInfo.deviceIcon;
+                deviceNameEl.textContent = deviceInfo.deviceName;
             } else {
-                deviceIconEl.textContent = '👽';
-                deviceNameEl.textContent = 'Unknown Device';
+                // Fallback if DeviceDetector is not available
+                deviceIconEl.textContent = '🖥️';
+                deviceNameEl.textContent = 'Desktop';
             }
         }
 
-        // Simulate analytics data (in production, this would come from actual analytics)
+        // Load analytics data from tracker
         function loadAnalytics() {
-            // Site launch date - October 23, 2025
-            const siteLaunchDate = new Date('2025-10-23');
-            const currentDate = new Date();
+            const analytics = window.AnalyticsTracker ? window.AnalyticsTracker.getAnalyticsData() : null;
             
-            // Calculate days since launch
-            const daysSinceLaunch = Math.floor((currentDate - siteLaunchDate) / (1000 * 60 * 60 * 24));
-            
-            // Calculate if we're more than 1 month old
-            const oneMonthAgo = new Date(currentDate);
-            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-            const isMoreThanOneMonthOld = siteLaunchDate < oneMonthAgo;
-            
-            // Generate data based on days since launch
-            document.getElementById('today-visitors').textContent = Math.floor(Math.random() * 50) + 20;
-            document.getElementById('yesterday-visitors').textContent = Math.floor(Math.random() * 40) + 15;
-            
-            // This month - proportional to days since launch (if launched this month)
-            const currentMonth = currentDate.getMonth();
-            const launchMonth = siteLaunchDate.getMonth();
-            const currentYear = currentDate.getFullYear();
-            const launchYear = siteLaunchDate.getFullYear();
-            
-            if (currentMonth === launchMonth && currentYear === launchYear) {
-                // Site launched this month, show proportional data
-                document.getElementById('month-visitors').textContent = Math.floor(daysSinceLaunch * 30) + Math.floor(Math.random() * 100);
-            } else {
-                // Site has been running for more than current month
-                document.getElementById('month-visitors').textContent = Math.floor(Math.random() * 1000) + 500;
-            }
-            
-            // Last month - only show if site is more than 1 month old
-            const lastMonthElement = document.getElementById('last-month-visitors');
-            if (isMoreThanOneMonthOld) {
-                lastMonthElement.textContent = Math.floor(Math.random() * 1000) + 400;
-            } else {
-                // Site is less than 1 month old, show 0 or N/A
-                lastMonthElement.textContent = '0';
-                // Optionally, hide the entire card
-                const lastMonthCard = lastMonthElement.closest('.metric-card');
-                if (lastMonthCard) {
-                    lastMonthCard.style.opacity = '0.5';
-                    const label = lastMonthCard.querySelector('.metric-label');
-                    if (label) {
-                        label.textContent = 'Last Month (N/A - Site < 1 month old)';
-                        label.style.fontSize = '0.9em';
+            if (analytics) {
+                // Display real data from analytics tracker
+                document.getElementById('today-visitors').textContent = analytics.todayVisitors;
+                document.getElementById('yesterday-visitors').textContent = analytics.yesterdayVisitors;
+                document.getElementById('month-visitors').textContent = analytics.monthVisitors;
+                
+                // Display last month visitors (or show N/A if 0)
+                const lastMonthElement = document.getElementById('last-month-visitors');
+                if (analytics.lastMonthVisitors > 0) {
+                    lastMonthElement.textContent = analytics.lastMonthVisitors;
+                } else {
+                    lastMonthElement.textContent = '0';
+                    const lastMonthCard = lastMonthElement.closest('.metric-card');
+                    if (lastMonthCard) {
+                        lastMonthCard.style.opacity = '0.7';
+                        const label = lastMonthCard.querySelector('.metric-label');
+                        if (label) {
+                            label.textContent = 'Last Month (No data yet)';
+                        }
                     }
                 }
+                
+                // New visitors indicator
+                const isNew = window.AnalyticsTracker.isNewVisitor();
+                document.getElementById('new-visitors').textContent = isNew ? '1 (You!)' : '0';
+            } else {
+                // Fallback values if tracker is not available
+                document.getElementById('today-visitors').textContent = '1';
+                document.getElementById('yesterday-visitors').textContent = '0';
+                document.getElementById('month-visitors').textContent = '1';
+                document.getElementById('last-month-visitors').textContent = '0';
+                document.getElementById('new-visitors').textContent = '1';
             }
-            
-            document.getElementById('new-visitors').textContent = Math.floor(Math.random() * 30) + 10;
         }
 
         // Star rating system
@@ -492,7 +429,9 @@
                 ];
                 ratingMessage.textContent = messages[currentRating - 1] || messages[4];
                 
-                // Save rating (in production, this would go to a server)
+                // Save rating to localStorage
+                localStorage.setItem('user_rating', currentRating);
+                localStorage.setItem('rating_date', new Date().toISOString());
                 console.log('User rated:', currentRating, 'stars');
             });
         });
@@ -515,9 +454,20 @@
             });
         }
 
+        // Load saved rating if available
+        function loadSavedRating() {
+            const savedRating = localStorage.getItem('user_rating');
+            if (savedRating) {
+                currentRating = parseInt(savedRating);
+                highlightStars(currentRating);
+                ratingMessage.textContent = 'Your previous rating';
+            }
+        }
+
         // Initialize
-        detectDevice();
+        displayDeviceInfo();
         loadAnalytics();
+        loadSavedRating();
     </script>
 </body>
 </html>
