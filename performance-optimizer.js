@@ -137,22 +137,25 @@
         const deviceInfo = {
             isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
             isLowEnd: false,
-            deviceMemory: navigator.deviceMemory || 4, // GB
+            deviceMemory: navigator.deviceMemory || 4, // GB, fallback to 4GB
             hardwareConcurrency: navigator.hardwareConcurrency || 4,
             connectionType: 'unknown'
         };
         
-        // Check network information
-        if ('connection' in navigator) {
-            const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        // Check network information (standard API only, limited browser support)
+        if ('connection' in navigator && navigator.connection) {
+            const conn = navigator.connection;
             if (conn) {
                 deviceInfo.connectionType = conn.effectiveType || 'unknown';
                 deviceInfo.saveData = conn.saveData || false;
             }
         }
         
-        // Detect low-end devices
-        if (deviceInfo.deviceMemory <= 2 || deviceInfo.hardwareConcurrency <= 2) {
+        // Detect low-end devices - only if deviceMemory API is supported
+        const hasLowMemory = navigator.deviceMemory && navigator.deviceMemory <= 2;
+        const hasLowCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2;
+        
+        if (hasLowMemory || hasLowCPU) {
             deviceInfo.isLowEnd = true;
             console.log('Low-end device detected');
             
