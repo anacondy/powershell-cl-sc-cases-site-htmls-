@@ -715,27 +715,6 @@ a:hover {
     }
 }
 
-/* Specific optimizations for 90Hz+ displays */
-@media screen and (min-resolution: 90dpi) and (min-refresh-rate: 90hz) {
-    :root {
-        --transition-speed: 0.2s; /* Faster transitions for high refresh displays */
-    }
-}
-
-/* Specific optimizations for 120Hz+ displays */
-@media screen and (min-resolution: 120dpi) and (min-refresh-rate: 120hz) {
-    :root {
-        --transition-speed: 0.15s; /* Even faster for 120Hz */
-    }
-}
-
-/* Specific optimizations for 144Hz+ displays */
-@media screen and (min-resolution: 144dpi) and (min-refresh-rate: 144hz) {
-    :root {
-        --transition-speed: 0.1s; /* Ultra-fast for 144Hz */
-    }
-}
-
 /* ===== TOUCH OPTIMIZATIONS FOR MOBILE DEVICES ===== */
 @media (hover: none) and (pointer: coarse) {
     /* Touch device optimizations */
