@@ -11,33 +11,86 @@
      * Detect refresh rate and apply optimizations
      */
     function detectAndOptimizeForRefreshRate() {
-        // Try to detect display refresh rate
+        // Try to detect display refresh rate using requestAnimationFrame
         let refreshRate = 60; // Default to 60Hz
+        let lastTime = performance.now();
+        let frameCount = 0;
+        let detectionComplete = false;
         
-        // Modern browsers support this API
-        if ('getDisplayMedia' in navigator.mediaDevices || screen.frameRate) {
-            refreshRate = screen.frameRate || 60;
+        function detectRefreshRate(currentTime) {
+            if (detectionComplete) return;
+            
+            frameCount++;
+            const elapsed = currentTime - lastTime;
+            
+            // After 1 second, calculate refresh rate
+            if (elapsed >= 1000) {
+                refreshRate = Math.round(frameCount);
+                detectionComplete = true;
+                
+                console.log(`Display refresh rate: ${refreshRate}Hz`);
+                applyRefreshRateOptimizations(refreshRate);
+            } else {
+                requestAnimationFrame(detectRefreshRate);
+            }
         }
         
-        // Log detected refresh rate
-        console.log(`Display refresh rate: ${refreshRate}Hz`);
+        // Start detection
+        requestAnimationFrame(detectRefreshRate);
         
-        // Apply optimizations based on refresh rate
+        // Fallback: Apply default optimizations after 100ms if detection is slow
+        setTimeout(() => {
+            if (!detectionComplete) {
+                console.log('Display refresh rate: 60Hz (fallback)');
+                applyRefreshRateOptimizations(60);
+            }
+        }, 100);
+    }
+    
+    /**
+     * Apply optimizations based on detected refresh rate
+     */
+    function applyRefreshRateOptimizations(refreshRate) {
         const root = document.documentElement;
         
+        // Set CSS variables for smooth animations matching refresh rate
         if (refreshRate >= 144) {
-            root.style.setProperty('--transition-speed', '0.1s');
-            console.log('Applied 144Hz+ optimizations');
+            root.style.setProperty('--transition-speed', '0.08s');
+            root.style.setProperty('--animation-timing', 'cubic-bezier(0.4, 0, 0.2, 1)');
+            console.log('Applied 144Hz+ optimizations for ultra-smooth experience');
         } else if (refreshRate >= 120) {
-            root.style.setProperty('--transition-speed', '0.15s');
-            console.log('Applied 120Hz optimizations');
+            root.style.setProperty('--transition-speed', '0.12s');
+            root.style.setProperty('--animation-timing', 'cubic-bezier(0.4, 0, 0.2, 1)');
+            console.log('Applied 120Hz optimizations for high refresh rate');
         } else if (refreshRate >= 90) {
-            root.style.setProperty('--transition-speed', '0.2s');
+            root.style.setProperty('--transition-speed', '0.16s');
+            root.style.setProperty('--animation-timing', 'cubic-bezier(0.4, 0, 0.2, 1)');
             console.log('Applied 90Hz optimizations');
         } else {
-            root.style.setProperty('--transition-speed', '0.3s');
+            root.style.setProperty('--transition-speed', '0.25s');
+            root.style.setProperty('--animation-timing', 'ease-in-out');
             console.log('Applied 60Hz optimizations');
         }
+        
+        // Enable hardware acceleration for better frame rates
+        const style = document.createElement('style');
+        style.textContent = `
+            * {
+                -webkit-transform: translateZ(0);
+                -moz-transform: translateZ(0);
+                -ms-transform: translateZ(0);
+                -o-transform: translateZ(0);
+                transform: translateZ(0);
+            }
+            
+            .content-card,
+            .mock-nav,
+            .article-entry {
+                will-change: transform;
+                transform: translate3d(0, 0, 0);
+            }
+        `;
+        document.head.appendChild(style);
     }
 
     /**
@@ -267,7 +320,8 @@
         initialize,
         detectDeviceCapabilities,
         optimizeForAspectRatio,
-        detectAndOptimizeForRefreshRate
+        detectAndOptimizeForRefreshRate,
+        applyRefreshRateOptimizations
     };
 
     // Auto-initialize
