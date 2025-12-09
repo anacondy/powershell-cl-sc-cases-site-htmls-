@@ -357,3 +357,5 @@ The archive currently includes **39 landmark cases** spanning from 1950 to 2024:
 ---
 
 **Note**: This website is for informational and educational purposes only. It does not provide legal advice. The information presented constitutes fair reporting and analysis of judicial pronouncements, which are matters of public record.
+
+<!-- Last deployed: 2025-12-09 17:44 UTC -->
