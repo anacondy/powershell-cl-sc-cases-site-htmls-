@@ -1,3 +1,10 @@
+/* Performance Optimizations for High Refresh Rate Displays */
+@media (prefers-reduced-motion: no-preference) {
+    :root {
+        scroll-behavior: smooth;
+    }
+}
+
 /* Root variables for theming */
 :root {
     /* Light Mode (Default) - Will be overridden by JS if device is dark */
@@ -56,6 +63,16 @@ body {
     line-height: 1.8;
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
     will-change: background-color, color;
+    
+    /* Performance optimizations */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    
+    /* Optimize for GPU compositing */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
 
     /* Background image for frosted glass effect */
     background-image: url('https://user-images.githubusercontent.com/97839659/251341142-2d93e18a-f5a6-4a4b-972a-609141f3e157.png'); /* Placeholder image */
@@ -91,6 +108,10 @@ body {
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     will-change: background-color, box-shadow;
     transform: translateZ(0); /* Hardware acceleration */
+    
+    /* Performance optimizations */
+    contain: layout style paint;
+    content-visibility: auto;
 }
 
 /* Nav Bar - Frosted */
@@ -677,18 +698,136 @@ a:hover {
     color: #ffda47; /* Yellow hover color */
 }
 
+/* ===== PERFORMANCE OPTIMIZATIONS FOR HIGH REFRESH RATE DISPLAYS ===== */
+/* Optimize for 60Hz, 90Hz, 120Hz, and 144Hz displays */
+@media (min-resolution: 60dpi) {
+    * {
+        /* Ensure smooth animations on all elements */
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Use transform for better performance on high refresh rate displays */
+    .nav-icon:hover,
+    .back-link:hover,
+    a:hover {
+        will-change: transform;
+        transform: translateZ(0);
+    }
+}
+
+/* ===== TOUCH OPTIMIZATIONS FOR MOBILE DEVICES ===== */
+@media (hover: none) and (pointer: coarse) {
+    /* Touch device optimizations */
+    .nav-icon,
+    a,
+    .back-link {
+        /* Increase touch target size */
+        min-height: 44px;
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Disable hover effects on touch devices */
+    .nav-icon:hover,
+    .back-link:hover,
+    a:hover {
+        transform: none;
+    }
+    
+    /* Optimize scroll performance on touch */
+    body,
+    .container,
+    .content-card {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+}
+
+/* ===== ASPECT RATIO SPECIFIC OPTIMIZATIONS ===== */
+/* 16:9 aspect ratio devices (common for most phones and tablets) */
+@media screen and (aspect-ratio: 16/9),
+       screen and (min-aspect-ratio: 15/9) and (max-aspect-ratio: 17/9) {
+    .container {
+        max-width: 100%;
+    }
+    
+    .content-card {
+        max-width: min(900px, 90vw);
+    }
+}
+
+/* 20:9 aspect ratio devices (modern smartphones) */
+@media screen and (aspect-ratio: 20/9),
+       screen and (min-aspect-ratio: 19/9) and (max-aspect-ratio: 21/9) {
+    .container {
+        padding-top: 90px; /* More top padding for tall screens */
+    }
+    
+    .content-card {
+        max-width: min(900px, 92vw);
+    }
+    
+    /* Optimize navigation for tall screens */
+    .mock-nav {
+        height: 56px;
+    }
+}
+
+/* 18:9 aspect ratio devices (common modern smartphones) */
+@media screen and (aspect-ratio: 18/9),
+       screen and (min-aspect-ratio: 17/9) and (max-aspect-ratio: 19/9) {
+    .container {
+        padding-top: 85px;
+    }
+}
+
+/* ===== LOW-END DEVICE OPTIMIZATIONS ===== */
+/* Detect and optimize for low-end devices */
+@media (prefers-reduced-motion: reduce) {
+    /* Disable animations for users who prefer reduced motion */
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Optimize for devices with limited GPU */
+@media (max-resolution: 1dppx) {
+    .content-card,
+    .mock-nav {
+        backdrop-filter: blur(5px); /* Reduce blur intensity */
+        -webkit-backdrop-filter: blur(5px);
+    }
+}
+
 /* ===== MOBILE RESPONSIVE STYLES ===== */
 /* Media query for mobile devices (phones and small tablets) */
 @media screen and (max-width: 768px) {
     /* Reduce body padding */
     body {
         background-attachment: scroll; /* Better performance on mobile */
+        /* Additional mobile optimizations */
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+    }
+    
+    /* Optimize for smooth scrolling on mobile */
+    html {
+        scroll-padding-top: 70px;
     }
     
     /* Container adjustments for mobile */
     .container {
         padding: 20px 15px;
         padding-top: 80px; /* Adjusted for fixed nav */
+        /* Performance optimization */
+        will-change: scroll-position;
     }
     
     /* Content card - reduce padding on mobile */
@@ -696,6 +835,8 @@ a:hover {
         padding: 25px 20px;
         margin-bottom: 40px;
         border-radius: 8px;
+        /* Optimize rendering on mobile */
+        contain: layout style;
     }
     
     /* Navigation bar adjustments */
