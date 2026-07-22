@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Legislations - Ramsey's Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { opacity: 0; transition: opacity 0.5s ease-in-out; }
+        body.loaded { opacity: 1; }
+    </style>
+</head>
+<body class="light-mode">
+
+    <div class="mock-nav">
+        <div class="left-section">
+            <span class="nav-icon" onclick="history.back()">&lt;</span>
+            <span class="nav-icon" onclick="history.forward()">&gt;</span>
+            <span class="nav-icon" onclick="location.reload()">&#x21bb;</span>
+        </div>
+        <div class="center-text">Ramsey</div>
+        <div class="right-section">
+            <div class="theme-toggle-wrapper">
+                <label class="theme-toggle">
+                    <input type="checkbox" id="theme-switch">
+                    <span class="slider round"></span>
+                </label>
+                <span>☀️/🌙</span>
+            </div>
+            <span class="nav-icon" onclick="window.location.href='about.html'">&#x2630;</span>
+            <span class="nav-icon">&#x2716;</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-card">
+            <header class="header">
+                <a href="index.html" class="back-link">← Home</a>
+                <h1 class="title">Key Legislations (2020-2024)</h1>
+                <p class="meta-info">A summary of significant bills and their outcomes.</p>
+            </header>
+
+            <main>
+                <div class="legislation-list">
+
+                    <!-- Legislation 1: Women's Reservation Bill -->
+                    <div class="legislation-card">
+                        <div class="leg-icon-container" style="color: #28a745;">
+                            <!-- SVG Icon: Check Circle -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <span class="leg-status-text">Passed</span>
+                        </div>
+                        <div class="leg-content">
+                            <h3 class="leg-title">Nari Shakti Vandan Adhiniyam (Women's Reservation Bill)</h3>
+                            <p class="leg-summary">The Constitution (106th Amendment) Act, 2023, reserving one-third of all seats in Lok Sabha and State Legislative Assemblies for women. This also applies to seats reserved for SCs/STs.</p>
+                            <div class="leg-meta">
+                                <div><strong>Tabled by:</strong> Arjun Ram Meghwal (Minister of Law)</div>
+                                <div><strong>Year:</strong> 2023</div>
+                            </div>
+                            <div class="leg-votes">
+                                <div><strong>Lok Sabha (LS):</strong> Passed (Votes: 454 Yes / 2 No)</div>
+                                <div><strong>Rajya Sabha (RS):</strong> Passed (Votes: 214 Yes / 0 No)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Legislation 2: Digital Personal Data Protection Act -->
+                    <div class="legislation-card">
+                        <div class="leg-icon-container" style="color: #28a745;">
+                            <!-- SVG Icon: Shield -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <span class="leg-status-text">Passed</span>
+                        </div>
+                        <div class="leg-content">
+                            <h3 class="leg-title">Digital Personal Data Protection Act, 2023</h3>
+                            <p class="leg-summary">Establishes the rules for the processing of digital personal data. It grants individuals rights over their data and creates obligations for entities (Data Fiduciaries) that process data.</p>
+                            <div class="leg-meta">
+                                <div><strong>Tabled by:</strong> Ashwini Vaishnaw (Minister of Electronics & IT)</div>
+                                <div><strong>Year:</strong> 2023</div>
+                            </div>
+                            <div class="leg-votes">
+                                <div><strong>Lok Sabha (LS):</strong> Passed (Voice Vote)</div>
+                                <div><strong>Rajya Sabha (RS):</strong> Passed (Voice Vote)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Legislation 3: Farm Laws Repeal Act -->
+                    <div class="legislation-card">
+                        <div class="leg-icon-container" style="color: #ffc107;">
+                            <!-- SVG Icon: Rotate CCW (Repeal) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                            <span class="leg-status-text">Repealed</span>
+                        </div>
+                        <div class="leg-content">
+                            <h3 class="leg-title">Farm Laws Repeal Act, 2021</h3>
+                            <p class="leg-summary">This Act formally repealed the three controversial farm laws passed by Parliament in 2020, following widespread and sustained protests by farmer unions.</p>
+                            <div class="leg-meta">
+                                <div><strong>Tabled by:</strong> Narendra Singh Tomar (Minister of Agriculture)</div>
+                                <div><strong>Year:</strong> 2021</div>
+                            </div>
+                            <div class="leg-votes">
+                                <div><strong>Lok Sabha (LS):</strong> Passed (Voice Vote)</div>
+                                <div><strong>Rajya Sabha (RS):</strong> Passed (Voice Vote)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality (Identical script)
+        const themeSwitch = document.getElementById('theme-switch');
+        const body = document.body;
+
+        function setTheme(isLight) {
+            if (isLight) {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+            }
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            themeSwitch.checked = (savedTheme === 'light');
+            setTheme(savedTheme === 'light');
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            themeSwitch.checked = false;
+            setTheme(false);
+        } else {
+            themeSwitch.checked = true;
+            setTheme(true);
+        }
+
+        themeSwitch.addEventListener('change', () => {
+            setTheme(themeSwitch.checked);
+        });
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (!localStorage.getItem('theme')) {
+                themeSwitch.checked = !event.matches;
+                setTheme(!event.matches);
+            }
+        });
+
+         // Simple fade-in animation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('loaded');
+        });
+
+    </script>
+</body>
+</html>

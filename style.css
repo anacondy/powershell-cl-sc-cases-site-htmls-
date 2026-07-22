@@ -663,3 +663,154 @@ a:hover {
 a:hover {
     color: #ffda47; /* Yellow hover color */
 }
+/* --- Styles for Legislation Page --- */
+
+.legislation-list {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.legislation-card {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    padding: 25px;
+    background-color: var(--section-bg-blend);
+    border-radius: 12px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.legislation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.leg-icon-container {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    padding: 10px;
+    border-right: 1px solid var(--section-separator-color);
+}
+
+.leg-icon-container svg {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 10px;
+}
+
+.leg-status-text {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--heading-color);
+}
+
+.leg-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.leg-title {
+    font-size: 1.6em;
+    color: var(--heading-color);
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.leg-summary {
+    font-size: 1.1em;
+    color: var(--text-color);
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.leg-meta {
+    font-size: 1em;
+    color: var(--meta-color);
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--section-separator-color);
+}
+
+.leg-votes {
+    font-size: 1em;
+    color: var(--text-color);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.leg-votes strong {
+    font-weight: 700;
+    color: var(--heading-color);
+}
+
+/* Responsive for smaller screens */
+@media screen and (max-width: 768px) {
+    .legislation-card {
+        flex-direction: column;
+        padding: 20px;
+    }
+    .leg-icon-container {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--section-separator-color);
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+    .leg-votes {
+        grid-template-columns: 1fr;
+    }
+}
+/* --- Styles for Homepage Link Cards --- */
+.page-links-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.page-link-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background-color: var(--section-bg-blend);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--meta-color);
+    font-size: 1.2em;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.page-link-card:hover {
+    background-color: var(--link-color);
+    color: var(--ruling-highlight-text);
+    transform: translateY(-5px);
+}
+
+.page-link-card.active {
+    background-color: var(--link-color);
+    color: var(--ruling-highlight-text);
+    font-weight: 700;
+}
+
+.page-link-card svg {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 600px) {
+    .page-links-section {
+        grid-template-columns: 1fr;
+    }
+}
