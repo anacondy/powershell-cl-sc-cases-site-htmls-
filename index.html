@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    
+
     <!-- Font loading with display=swap for better performance -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
@@ -25,8 +25,8 @@
 </head>
 <body> <div class="mock-nav">
         <div class="left-section">
-            <span class="nav-icon" onclick="history.back()">&lt;</span>
-            <span class="nav-icon" onclick="history.forward()">&gt;</span>
+            <span class="nav-icon" data-nav-action="back" role="button" tabindex="0">&lt;</span>
+            <span class="nav-icon" data-nav-action="forward" role="button" tabindex="0">&gt;</span>
         </div>
         <div class="center-text">Ramsey</div>
         <div class="right-section">
@@ -35,10 +35,10 @@
                     <input type="checkbox" id="theme-switch">
                     <span class="slider round"></span>
                 </label>
-                <span>☀️/🌙</span>
+                <span>Ã¢Ëœâ‚¬Ã¯Â¸Â/Ã°Å¸Å’â„¢</span>
             </div>
-            <span class="nav-icon" onclick="window.location.href='about.html'">&#x2630;</span>
-            <span class="nav-icon" onclick="window.location.href='analytics.html'">&#x2716;</span>
+            <span class="nav-icon" data-nav-href="about.html" role="button" tabindex="0">&#x2630;</span>
+            <span class="nav-icon" data-nav-href="analytics.html" role="button" tabindex="0">&#x2716;</span>
         </div>
     </div>
 
@@ -287,19 +287,12 @@
     </div>
 
 </div>
-</div>
-
-</div>
-</div>
-</div>
-
-
-
-
-                </div>
             </main>
         </div>
     </div>
+
+    <script src="ui-common.js"></script>
+
 
     <script src="theme.js"></script>
     <script src="analytics-tracker.js"></script>

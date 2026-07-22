@@ -1,73 +1,77 @@
 /**
- * Shared theme management and common functionality
- * This file handles theme switching and system preference detection
+ * Hardened shared theme management.
+ * - Survives blocked localStorage / older Safari matchMedia.
+ * - Never leaves the page invisible if initialization fails.
  */
-
 (function() {
     'use strict';
-    
-    // Theme toggle functionality
-    const themeSwitch = document.getElementById('theme-switch');
+
     const body = document.body;
+    const themeSwitch = document.getElementById('theme-switch');
 
-    /**
-     * Set theme and update UI
-     * @param {boolean} isLight - True for light mode, false for dark mode
-     */
-    function setTheme(isLight) {
-        if (isLight) {
-            body.classList.remove('dark-mode');
-            body.classList.add('light-mode');
-        } else {
-            body.classList.remove('light-mode');
-            body.classList.add('dark-mode');
-        }
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    function safeGet(key) {
+        try { return window.localStorage ? localStorage.getItem(key) : null; }
+        catch (_) { return null; }
     }
 
-    /**
-     * Initialize theme based on saved preference or system preference
-     */
+    function safeSet(key, value) {
+        try { if (window.localStorage) localStorage.setItem(key, value); }
+        catch (_) { /* Storage can be disabled. Theme still works for this load. */ }
+    }
+
+    function setTheme(isLight, persist = true) {
+        body.classList.toggle('light-mode', isLight);
+        body.classList.toggle('dark-mode', !isLight);
+        if (themeSwitch) themeSwitch.checked = isLight;
+        if (persist) safeSet('theme', isLight ? 'light' : 'dark');
+    }
+
+    function systemPrefersDark() {
+        return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+
     function initializeTheme() {
-        // Remove any default class first to let JS determine theme
         body.classList.remove('light-mode', 'dark-mode');
-        
-        const savedTheme = localStorage.getItem('theme');
-        
-        if (savedTheme) {
-            // User has a saved preference
-            const isLight = (savedTheme === 'light');
-            themeSwitch.checked = isLight;
-            setTheme(isLight);
-        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            // System prefers dark mode
-            themeSwitch.checked = false;
-            setTheme(false);
-        } else {
-            // Default to light mode
-            themeSwitch.checked = true;
-            setTheme(true);
+        const savedTheme = safeGet('theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+            setTheme(savedTheme === 'light', false);
+            return;
+        }
+        setTheme(!systemPrefersDark(), false);
+    }
+
+    function bindSystemPreferenceListener() {
+        if (!window.matchMedia) return;
+        const media = window.matchMedia('(prefers-color-scheme: dark)');
+        const handler = event => {
+            if (!safeGet('theme')) setTheme(!event.matches, false);
+        };
+        if (typeof media.addEventListener === 'function') {
+            media.addEventListener('change', handler);
+        } else if (typeof media.addListener === 'function') {
+            media.addListener(handler); // Safari < 14
         }
     }
 
-    // Initialize theme immediately
-    initializeTheme();
+    function markLoaded() {
+        body.classList.add('loaded');
+    }
 
-    // Listen for toggle changes
-    themeSwitch.addEventListener('change', () => {
-        setTheme(themeSwitch.checked);
-    });
-
-    // Listen for system theme changes (only if no saved preference)
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-        if (!localStorage.getItem('theme')) {
-            themeSwitch.checked = !event.matches;
-            setTheme(!event.matches);
+    try {
+        initializeTheme();
+        if (themeSwitch) {
+            themeSwitch.addEventListener('change', () => setTheme(themeSwitch.checked, true));
         }
-    });
-
-    // Simple fade-in animation on load
-    document.addEventListener('DOMContentLoaded', () => {
-        document.body.classList.add('loaded');
-    });
+        bindSystemPreferenceListener();
+    } catch (error) {
+        // Fail open: visible, readable light-mode page instead of a blank screen.
+        body.classList.add('light-mode');
+        // Deliberately no production console spam.
+    } finally {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', markLoaded, { once: true });
+        } else {
+            markLoaded();
+        }
+    }
 })();

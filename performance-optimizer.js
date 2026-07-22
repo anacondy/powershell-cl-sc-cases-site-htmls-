@@ -1,321 +1,200 @@
 /**
- * Performance Optimizer for Ramsey's Legal Archive
- * Ensures smooth scrolling and 60+ FPS performance
- * Optimized for mobile devices and high refresh rate displays
+ * Hardened Performance Optimizer for Ramsey's Legal Archive.
+ * Fixes GPU over-promotion, duplicate style injection, selector crashes, and production log noise.
  */
-
 (function() {
     'use strict';
 
-    /**
-     * Detect refresh rate and apply optimizations
-     */
-    function detectAndOptimizeForRefreshRate() {
-        // Try to detect display refresh rate using requestAnimationFrame
-        let refreshRate = 60; // Default to 60Hz
-        let lastTime = performance.now();
-        let frameCount = 0;
-        let detectionComplete = false;
-        
-        function detectRefreshRate(currentTime) {
-            if (detectionComplete) return;
-            
-            frameCount++;
-            const elapsed = currentTime - lastTime;
-            
-            // After 1 second, calculate refresh rate
-            if (elapsed >= 1000) {
-                refreshRate = Math.round(frameCount);
-                detectionComplete = true;
-                
-                console.log(`Display refresh rate: ${refreshRate}Hz`);
-                applyRefreshRateOptimizations(refreshRate);
-            } else {
-                requestAnimationFrame(detectRefreshRate);
-            }
+    const DEBUG = (() => {
+        try { return localStorage.getItem('debug-performance') === 'true'; }
+        catch (_) { return false; }
+    })();
+    const log = (...args) => { if (DEBUG) console.log(...args); };
+    const warn = (...args) => { if (DEBUG) console.warn(...args); };
+
+    function upsertStyle(id, cssText) {
+        let style = document.getElementById(id);
+        if (!style) {
+            style = document.createElement('style');
+            style.id = id;
+            document.head.appendChild(style);
         }
-        
-        // Start detection
-        requestAnimationFrame(detectRefreshRate);
-        
-        // Fallback: Apply default optimizations after 100ms if detection is slow
-        setTimeout(() => {
-            if (!detectionComplete) {
-                console.log('Display refresh rate: 60Hz (fallback)');
-                applyRefreshRateOptimizations(60);
-            }
-        }, 100);
+        style.textContent = cssText;
     }
-    
-    /**
-     * Apply optimizations based on detected refresh rate
-     */
+
+    function detectAndOptimizeForRefreshRate() {
+        let refreshRate = 60;
+        let startTime = performance.now();
+        let frameCount = 0;
+        let done = false;
+
+        function finish(rate) {
+            if (done) return;
+            done = true;
+            applyRefreshRateOptimizations(rate);
+        }
+
+        function tick(now) {
+            if (done) return;
+            frameCount += 1;
+            const elapsed = now - startTime;
+            if (elapsed >= 1000) finish(Math.max(30, Math.min(240, Math.round(frameCount * 1000 / elapsed))));
+            else requestAnimationFrame(tick);
+        }
+
+        requestAnimationFrame(tick);
+        setTimeout(() => finish(refreshRate), 1200);
+    }
+
     function applyRefreshRateOptimizations(refreshRate) {
         const root = document.documentElement;
-        
-        // Set CSS variables for smooth animations matching refresh rate
         if (refreshRate >= 144) {
             root.style.setProperty('--transition-speed', '0.08s');
             root.style.setProperty('--animation-timing', 'cubic-bezier(0.4, 0, 0.2, 1)');
-            console.log('Applied 144Hz+ optimizations for ultra-smooth experience');
         } else if (refreshRate >= 120) {
             root.style.setProperty('--transition-speed', '0.12s');
             root.style.setProperty('--animation-timing', 'cubic-bezier(0.4, 0, 0.2, 1)');
-            console.log('Applied 120Hz optimizations for high refresh rate');
         } else if (refreshRate >= 90) {
             root.style.setProperty('--transition-speed', '0.16s');
             root.style.setProperty('--animation-timing', 'cubic-bezier(0.4, 0, 0.2, 1)');
-            console.log('Applied 90Hz optimizations');
         } else {
             root.style.setProperty('--transition-speed', '0.25s');
             root.style.setProperty('--animation-timing', 'ease-in-out');
-            console.log('Applied 60Hz optimizations');
         }
-        
-        // Enable hardware acceleration for better frame rates
-        const style = document.createElement('style');
-        style.textContent = `
-            * {
-                -webkit-transform: translateZ(0);
-                -moz-transform: translateZ(0);
-                -ms-transform: translateZ(0);
-                -o-transform: translateZ(0);
-                transform: translateZ(0);
-            }
-            
-            .content-card,
-            .mock-nav,
-            .article-entry {
-                will-change: transform;
-                transform: translate3d(0, 0, 0);
-            }
-        `;
-        document.head.appendChild(style);
+
+        // Do NOT transform every element. That creates thousands of layers and breaks sticky/fixed behavior.
+        upsertStyle('rla-perf-layer-hints', `
+            .mock-nav { will-change: background-color; transform: translateZ(0); }
+            .content-card { transform: translateZ(0); }
+            .nav-icon, .back-link { will-change: transform; }
+        `);
+        log(`Display refresh rate optimization applied: ${refreshRate}Hz`);
     }
 
-    /**
-     * Optimize images for lazy loading and performance
-     */
     function optimizeImages() {
-        const images = document.querySelectorAll('img');
-        
-        images.forEach(img => {
-            // Add loading="lazy" if not already present
-            if (!img.hasAttribute('loading')) {
-                img.setAttribute('loading', 'lazy');
-            }
-            
-            // Add decoding="async" for better performance
-            if (!img.hasAttribute('decoding')) {
-                img.setAttribute('decoding', 'async');
-            }
+        document.querySelectorAll('img').forEach(img => {
+            if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+            if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
         });
     }
 
-    /**
-     * Monitor frame rate and performance
-     */
     function monitorPerformance() {
+        if (!DEBUG) return;
         let lastTime = performance.now();
         let frames = 0;
-        let fps = 60;
-        
-        function measureFPS() {
-            const currentTime = performance.now();
-            frames++;
-            
-            if (currentTime >= lastTime + 1000) {
-                fps = Math.round((frames * 1000) / (currentTime - lastTime));
+        function measureFPS(now) {
+            frames += 1;
+            if (now >= lastTime + 1000) {
+                const fps = Math.round((frames * 1000) / (now - lastTime));
                 frames = 0;
-                lastTime = currentTime;
-                
-                // Log FPS occasionally (every 5 seconds)
-                if (Math.random() < 0.2) {
-                    console.log(`Current FPS: ${fps}`);
-                    
-                    // Warn if FPS is consistently low
-                    if (fps < 30) {
-                        console.warn('Low FPS detected. Consider enabling performance mode.');
-                    }
-                }
+                lastTime = now;
+                log(`Current FPS: ${fps}`);
+                if (fps < 30) warn('Low FPS detected.');
             }
-            
             requestAnimationFrame(measureFPS);
         }
-        
-        // Only monitor in development/debug mode
-        if (localStorage.getItem('debug-performance') === 'true') {
-            requestAnimationFrame(measureFPS);
-        }
+        requestAnimationFrame(measureFPS);
     }
 
-    /**
-     * Optimize scrolling performance
-     */
+    function getHashTarget(hash) {
+        if (!hash || hash === '#') return null;
+        const id = decodeURIComponent(hash.slice(1));
+        if (!id) return null;
+        return document.getElementById(id);
+    }
+
     function optimizeScrolling() {
         let ticking = false;
-        
-        function handleScroll() {
+        window.addEventListener('scroll', () => {
             if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    // Scroll handling code here (if needed)
-                    ticking = false;
-                });
+                requestAnimationFrame(() => { ticking = false; });
                 ticking = true;
             }
-        }
-        
-        // Use passive event listener for better scroll performance
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        
-        // Add smooth scroll behavior with requestAnimationFrame
+        }, { passive: true });
+
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
+                const target = getHashTarget(this.getAttribute('href'));
+                if (!target) return; // Let placeholder links do nothing without throwing.
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
     }
 
-    /**
-     * Detect device capabilities and apply optimizations
-     */
     function detectDeviceCapabilities() {
         const deviceInfo = {
             isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
             isLowEnd: false,
-            deviceMemory: navigator.deviceMemory || 4, // GB, fallback to 4GB
-            hardwareConcurrency: navigator.hardwareConcurrency || 4,
+            deviceMemory: navigator.deviceMemory || null,
+            hardwareConcurrency: navigator.hardwareConcurrency || null,
             connectionType: 'unknown'
         };
-        
-        // Check network information (standard API only, limited browser support)
+
         if ('connection' in navigator && navigator.connection) {
-            const conn = navigator.connection;
-            if (conn) {
-                deviceInfo.connectionType = conn.effectiveType || 'unknown';
-                deviceInfo.saveData = conn.saveData || false;
-            }
+            deviceInfo.connectionType = navigator.connection.effectiveType || 'unknown';
+            deviceInfo.saveData = !!navigator.connection.saveData;
         }
-        
-        // Detect low-end devices - only if deviceMemory API is supported
+
         const hasLowMemory = navigator.deviceMemory && navigator.deviceMemory <= 2;
         const hasLowCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2;
-        
-        if (hasLowMemory || hasLowCPU) {
+        if (hasLowMemory || hasLowCPU || deviceInfo.saveData) {
             deviceInfo.isLowEnd = true;
-            console.log('Low-end device detected');
-            
-            // Apply low-end optimizations
             document.body.classList.add('low-end-device');
-            
-            // Reduce backdrop blur on low-end devices
-            const style = document.createElement('style');
-            style.textContent = `
+            upsertStyle('rla-low-end-style', `
                 .low-end-device .content-card,
                 .low-end-device .mock-nav {
                     backdrop-filter: blur(3px) !important;
                     -webkit-backdrop-filter: blur(3px) !important;
                 }
-            `;
-            document.head.appendChild(style);
+            `);
         }
-        
-        console.log('Device capabilities:', deviceInfo);
+        log('Device capabilities:', deviceInfo);
         return deviceInfo;
     }
 
-    /**
-     * Apply aspect ratio specific optimizations
-     */
     function optimizeForAspectRatio() {
-        const aspectRatio = window.innerWidth / window.innerHeight;
-        
-        console.log(`Screen aspect ratio: ${aspectRatio.toFixed(2)} (${window.innerWidth}x${window.innerHeight})`);
-        
-        // Detect common aspect ratios
-        if (aspectRatio >= 0.44 && aspectRatio <= 0.46) {
-            console.log('Detected 20:9 aspect ratio device');
-            document.body.classList.add('aspect-20-9');
-        } else if (aspectRatio >= 0.55 && aspectRatio <= 0.58) {
-            console.log('Detected 16:9 aspect ratio device');
-            document.body.classList.add('aspect-16-9');
-        } else if (aspectRatio >= 0.49 && aspectRatio <= 0.51) {
-            console.log('Detected 18:9 aspect ratio device');
-            document.body.classList.add('aspect-18-9');
-        }
+        const aspectRatio = window.innerWidth / Math.max(window.innerHeight, 1);
+        document.body.classList.remove('aspect-20-9', 'aspect-16-9', 'aspect-18-9');
+        if (aspectRatio >= 0.44 && aspectRatio <= 0.46) document.body.classList.add('aspect-20-9');
+        else if (aspectRatio >= 0.55 && aspectRatio <= 0.58) document.body.classList.add('aspect-16-9');
+        else if (aspectRatio >= 0.49 && aspectRatio <= 0.51) document.body.classList.add('aspect-18-9');
     }
 
-    /**
-     * Optimize for touch devices
-     */
     function optimizeForTouch() {
         if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
             document.body.classList.add('touch-device');
-            console.log('Touch device detected - optimizations applied');
-            
-            // Add touch-specific optimizations
-            const style = document.createElement('style');
-            style.textContent = `
-                .touch-device * {
-                    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-                    -webkit-touch-callout: none;
-                }
-                
+            upsertStyle('rla-touch-style', `
                 .touch-device .nav-icon,
                 .touch-device a {
                     min-height: 44px;
                     min-width: 44px;
                 }
-            `;
-            document.head.appendChild(style);
+            `);
         }
     }
 
-    /**
-     * Initialize all optimizations
-     */
     function initialize() {
-        console.log('Initializing performance optimizations...');
-        
-        // Run optimizations
         detectAndOptimizeForRefreshRate();
         detectDeviceCapabilities();
         optimizeForAspectRatio();
         optimizeForTouch();
-        
-        // Wait for DOM to be ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                optimizeImages();
-                optimizeScrolling();
-                monitorPerformance();
-            });
-        } else {
+
+        const onReady = () => {
             optimizeImages();
             optimizeScrolling();
             monitorPerformance();
-        }
-        
-        // Re-optimize on window resize (debounced)
+        };
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', onReady, { once: true });
+        else onReady();
+
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                optimizeForAspectRatio();
-            }, 250);
+            resizeTimeout = setTimeout(optimizeForAspectRatio, 250);
         }, { passive: true });
-        
-        console.log('Performance optimizations initialized successfully');
     }
 
-    // Export to global scope
     window.PerformanceOptimizer = {
         initialize,
         detectDeviceCapabilities,
@@ -324,7 +203,5 @@
         applyRefreshRateOptimizations
     };
 
-    // Auto-initialize
     initialize();
-
 })();

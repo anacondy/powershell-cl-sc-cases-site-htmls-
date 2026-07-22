@@ -6,7 +6,7 @@
     <meta name="description" content="Landmark Supreme Court case from India - Ramsey's Legal Archive">
     <meta name="theme-color" content="#f0f2f5">
     <title>Sajjan Singh v. State of Rajasthan (1965)</title>
-    
+
     <!-- Preconnect to external resources for faster loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,8 +23,8 @@
 
     <div class="mock-nav">
         <div class="left-section">
-            <span class="nav-icon" onclick="history.back()">&lt;</span>
-            <span class="nav-icon" onclick="history.forward()">&gt;</span>
+            <span class="nav-icon" data-nav-action="back" role="button" tabindex="0">&lt;</span>
+            <span class="nav-icon" data-nav-action="forward" role="button" tabindex="0">&gt;</span>
         </div>
         <div class="center-text">Ramsey</div>
         <div class="right-section">
@@ -33,17 +33,17 @@
                     <input type="checkbox" id="theme-switch">
                     <span class="slider round"></span>
                 </label>
-                <span>☀️/🌙</span>
+                <span>Ã¢Ëœâ‚¬Ã¯Â¸Â/Ã°Å¸Å’â„¢</span>
             </div>
-            <span class="nav-icon" onclick="window.location.href='about.html'">&#x2630;</span>
-            <span class="nav-icon" onclick="window.location.href='analytics.html'">&#x2716;</span>
+            <span class="nav-icon" data-nav-href="about.html" role="button" tabindex="0">&#x2630;</span>
+            <span class="nav-icon" data-nav-href="analytics.html" role="button" tabindex="0">&#x2716;</span>
         </div>
     </div>
 
     <div class="container">
         <div class="content-card">
             <header class="header">
-                <a href="index.html" class="back-link">← Home</a>
+                <a href="index.html" class="back-link">Ã¢â€ Â Home</a>
                 <h1 class="title">Sajjan Singh&nbsp;<span class="v-text">v.</span>&nbsp;State of Rajasthan</h1>
                 <p class="meta-info"><span class="date">Delivered: October 30, 1964</span> / 5-Judge Constitution Bench</p>
             </header>
@@ -188,7 +188,7 @@
 
                 <div class="analysis-section">
                     <h3 class="section-heading">COURT'S ANALYSIS</h3>
-                    <p>The majority largely followed the reasoning of *Shankari Prasad*, emphasizing the distinction between constituent and legislative power. CJI Gajendragadkar argued that if the framers intended to make Fundamental Rights unamendable, they would have stated so explicitly. The key development, however, came from the concurring opinions. Justice Hidayatullah expressed unease about the potential scope of amendment power over fundamental freedoms. Justice Mudholkar went further, citing precedents from other countries and questioning if certain fundamental characteristics of the Constitution were beyond the reach of Article 368, hinting at an implied limitation on the amending power – a precursor to the Basic Structure Doctrine.</p>
+                    <p>The majority largely followed the reasoning of *Shankari Prasad*, emphasizing the distinction between constituent and legislative power. CJI Gajendragadkar argued that if the framers intended to make Fundamental Rights unamendable, they would have stated so explicitly. The key development, however, came from the concurring opinions. Justice Hidayatullah expressed unease about the potential scope of amendment power over fundamental freedoms. Justice Mudholkar went further, citing precedents from other countries and questioning if certain fundamental characteristics of the Constitution were beyond the reach of Article 368, hinting at an implied limitation on the amending power Ã¢â‚¬â€œ a precursor to the Basic Structure Doctrine.</p>
                 </div>
 
                 <div class="small-font-section">
@@ -215,7 +215,11 @@
         </div>
     </div>
 
-    
+
+    <script src="ui-common.js"></script>
+
+
+
     <script src="theme.js"></script>
     <script src="analytics-tracker.js"></script>
     <script src="performance-optimizer.js"></script>

@@ -6,7 +6,7 @@
     <meta name="description" content="Landmark Supreme Court case from India - Ramsey's Legal Archive">
     <meta name="theme-color" content="#f0f2f5">
     <title>Mohd. Ahmed Khan v. Shah Bano Begum (1985)</title>
-    
+
     <!-- Preconnect to external resources for faster loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,8 +23,8 @@
 
     <div class="mock-nav">
         <div class="left-section">
-            <span class="nav-icon" onclick="history.back()">&lt;</span>
-            <span class="nav-icon" onclick="history.forward()">&gt;</span>
+            <span class="nav-icon" data-nav-action="back" role="button" tabindex="0">&lt;</span>
+            <span class="nav-icon" data-nav-action="forward" role="button" tabindex="0">&gt;</span>
         </div>
         <div class="center-text">Ramsey</div>
         <div class="right-section">
@@ -33,17 +33,17 @@
                     <input type="checkbox" id="theme-switch">
                     <span class="slider round"></span>
                 </label>
-                <span>☀️/🌙</span>
+                <span>Ã¢Ëœâ‚¬Ã¯Â¸Â/Ã°Å¸Å’â„¢</span>
             </div>
-            <span class="nav-icon" onclick="window.location.href='about.html'">&#x2630;</span>
-            <span class="nav-icon" onclick="window.location.href='analytics.html'">&#x2716;</span>
+            <span class="nav-icon" data-nav-href="about.html" role="button" tabindex="0">&#x2630;</span>
+            <span class="nav-icon" data-nav-href="analytics.html" role="button" tabindex="0">&#x2716;</span>
         </div>
     </div>
 
     <div class="container">
         <div class="content-card">
             <header class="header">
-                <a href="index.html" class="back-link">← Home</a>
+                <a href="index.html" class="back-link">Ã¢â€ Â Home</a>
                 <h1 class="title">Mohd. Ahmed Khan&nbsp;<span class="v-text">v.</span>&nbsp;Shah Bano Begum & Ors.</h1>
                 <p class="meta-info"><span class="date">Delivered: April 23, 1985</span> / 5-Judge Constitution Bench</p>
             </header>
@@ -206,7 +206,7 @@
 
                 <div class="analysis-section">
                     <h3 class="section-heading">COURT'S ANALYSIS</h3>
-                    <p>Chief Justice Chandrachud's judgment focused on the legislative intent behind Section 125 CrPC – preventing destitution and vagrancy, applicable across communities. The Court interpreted the CrPC provisions harmoniously with Muslim Personal Law principles where possible but ultimately asserted the supremacy of the secular criminal procedure code in matters of maintenance intended to prevent social problems. The analysis delved into the meaning of "wife" and the nature of <em>mehr</em>, concluding it wasn't a substitute for post-divorce maintenance under the secular law. The Court's reference to the Uniform Civil Code (Article 44), though an obiter dictum (observation not essential to the decision), ignited widespread debate and political controversy, highlighting the tension between secular law, personal laws, and constitutional directives.</p>
+                    <p>Chief Justice Chandrachud's judgment focused on the legislative intent behind Section 125 CrPC Ã¢â‚¬â€œ preventing destitution and vagrancy, applicable across communities. The Court interpreted the CrPC provisions harmoniously with Muslim Personal Law principles where possible but ultimately asserted the supremacy of the secular criminal procedure code in matters of maintenance intended to prevent social problems. The analysis delved into the meaning of "wife" and the nature of <em>mehr</em>, concluding it wasn't a substitute for post-divorce maintenance under the secular law. The Court's reference to the Uniform Civil Code (Article 44), though an obiter dictum (observation not essential to the decision), ignited widespread debate and political controversy, highlighting the tension between secular law, personal laws, and constitutional directives.</p>
                 </div>
 
                 <div class="small-font-section">
@@ -233,7 +233,11 @@
         </div>
     </div>
 
-    
+
+    <script src="ui-common.js"></script>
+
+
+
     <script src="theme.js"></script>
     <script src="analytics-tracker.js"></script>
     <script src="performance-optimizer.js"></script>

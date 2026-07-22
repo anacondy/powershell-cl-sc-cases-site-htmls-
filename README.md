@@ -26,7 +26,7 @@ A modern, responsive website showcasing landmark Supreme Court cases from India,
 - **Dark/Light Mode Toggle**: Seamless theme switching with automatic system preference detection
 - **Responsive Layout**: Optimized for all device sizes
 - **Smooth Animations**: Hardware-accelerated transitions for lag-free experience
-- **Clean Navigation**: 
+- **Clean Navigation**:
   - Hamburger menu for accessing About page
   - Back/Forward navigation buttons
   - Refresh functionality
@@ -134,7 +134,7 @@ The website follows specific styling rules outlined in `RULES.md`:
 - **Frosted Glass Theme**: Semi-transparent backgrounds with backdrop blur
 - **Borderless Timeline**: Case progression timelines have no borders or shaded boxes
 - **Consistent Typography**: Inter font family throughout
-- **Color Scheme**: 
+- **Color Scheme**:
   - Light mode: Light backgrounds with dark text
   - Dark mode: Dark backgrounds with light text
   - Accent color: Red (#DC143C) for "v." in case titles
@@ -349,9 +349,9 @@ The archive currently includes **39 landmark cases** spanning from 1950 to 2024:
 
 ## ✍️ Authors
 
-💫 *"You have all the weapons you need. Now fight!"* 💫  
-— From *Sucker Punch* 🎬  
-**Created by**: anacondy & GitHub Copilot 🚀✨🔮  
+💫 *"You have all the weapons you need. Now fight!"* 💫
+— From *Sucker Punch* 🎬
+**Created by**: anacondy & GitHub Copilot 🚀✨🔮
 *Fighting for justice, one case at a time* ⚖️💪🌟
 
 ---
